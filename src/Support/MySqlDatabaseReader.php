@@ -29,9 +29,12 @@ class MySqlDatabaseReader implements DatabaseReader
 {
     protected Connection $connection;
 
-    public function __construct()
+    public function __construct(
+        protected ?string $schema = null,
+    )
     {
         $this->connection = DriverManager::getConnection($this->getConnectionParameters());
+        $this->schema = $schema ?? config('database.connections.mysql.database');
     }
 
     public function getConnectionParameters(): array
@@ -59,8 +62,19 @@ class MySqlDatabaseReader implements DatabaseReader
         return $schemaManager->listTableColumns($table);
     }
 
-    public function getColumnDataObject($column): ColumnData
+    public function getColumnDataObject($column, array $foreign_keys): ColumnData
     {
+        $foreign_key_column_names = array_column($foreign_keys, 'COLUMN_NAME');
+        $is_foreign_key = in_array($column->getName(), $foreign_key_column_names);
+        $referenced_table_name = null;
+        $referenced_column_name = null;
+
+        if ($is_foreign_key) {
+            $foreign_key = $foreign_keys[array_search($column->getName(), $foreign_key_column_names)];
+            $referenced_table_name = $foreign_key->REFERENCED_TABLE_NAME;
+            $referenced_column_name = $foreign_key->REFERENCED_COLUMN_NAME;
+        }
+
         /* @var Column $column */
         return new ColumnData(
             $column->getName(),
@@ -69,6 +83,9 @@ class MySqlDatabaseReader implements DatabaseReader
             ! $column->getNotnull(),
             $column->getAutoincrement(),
             $column->getUnsigned(),
+            $is_foreign_key,
+            $referenced_table_name,
+            $referenced_column_name
         );
     }
 
@@ -80,43 +97,34 @@ class MySqlDatabaseReader implements DatabaseReader
     {
         $columns = $this->listColumns($table_name);
         $columnObjects = [];
+        $foreign_keys = $this->getForeignKeys($table_name);
+
         /* @var Column $column */
         foreach ($columns as $column) {
-            $columnObjects[] = $this->getColumnDataObject($column);
+            $columnObjects[] = $this->getColumnDataObject($column, $foreign_keys);
         }
 
         return $columnObjects;
     }
 
-    public function getForeignKeys(string $table)
+    public function getForeignKeys(string $table): array
     {
         $foreignKeys = DB::select(
             "
             SELECT CONSTRAINT_NAME, COLUMN_NAME, REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME
             FROM information_schema.KEY_COLUMN_USAGE
-            WHERE TABLE_NAME = ? AND REFERENCED_TABLE_NAME IS NOT NULL",
-            [$table]
+            WHERE TABLE_NAME = ? AND REFERENCED_TABLE_NAME IS NOT NULL AND CONSTRAINT_SCHEMA = ?",
+            [$table, $this->schema]
         );
 
-        dd($foreignKeys);
-        if (empty($foreignKeys)) {
-            return [];
-        }
-
-        foreach ($foreignKeys as $foreignKey) {
-            $this->info("Constraint: {$foreignKey->CONSTRAINT_NAME}, Column: {$foreignKey->COLUMN_NAME},
-                         Referenced Table: {$foreignKey->REFERENCED_TABLE_NAME},
-                         Referenced Column: {$foreignKey->REFERENCED_COLUMN_NAME}");
-        }
+        return $foreignKeys;
     }
 
-    public function getReferencingTables(string $table, string $schema = null)
+    public function getReferencingTables(string $table)
     {
-        $schema ??= config('database.connections.mysql.database');
-
         $referencingTables = DB::select("SELECT TABLE_NAME, COLUMN_NAME, CONSTRAINT_NAME, REFERENCED_COLUMN_NAME
                                           FROM information_schema.KEY_COLUMN_USAGE
-                                          WHERE REFERENCED_TABLE_NAME = ? AND CONSTRAINT_SCHEMA = ?", [$table, $schema]);
+                                          WHERE REFERENCED_TABLE_NAME = ? AND CONSTRAINT_SCHEMA = ?", [$table, $this->schema]);
 
         dd($referencingTables);
     }

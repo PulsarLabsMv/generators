@@ -30,6 +30,6 @@ class FillablePropertyUpdater implements IsStubUpdater
 
         $fillable = $this->fillable_prefix . "\n" . $this->fillable . $this->fillable_suffix;
 
-        return str_replace('{{fillable}}', $fillable, $this->stub);
+        return str_replace('{{ fillable }}', $fillable, $this->stub);
     }
 }

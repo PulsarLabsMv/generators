@@ -55,7 +55,7 @@ class ModelGenerator
     protected function updateStubContent(string $stub, string $table_name, array $columns): string
     {
         $stub = (new ClassNameUpdater($stub, $table_name))->handle();
-        $stub = (new FillablePropertyUpdater($stub, $columns, $this->getGuardedProperties()))->handle();
+        $stub = (new FillablePropertyUpdater($stub, $columns, $this->getGuardedProperties($columns)))->handle();
         //        $stub = str_replace('{{attributes}}', $this->getAttributesProperty($columns), $stub);
         //        $stub = str_replace('{{casts}}', $this->getCasts($columns), $stub);
         //        $stub = str_replace('{{relations}}', $this->getRelations($columns), $stub);
