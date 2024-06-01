@@ -21,7 +21,7 @@ class BelongsToManyRelationsUpdater implements IsStubUpdater
     public function handle(): string
     {
         $belongs_to_stub = file_get_contents(__DIR__ . '/../stubs/belongs_to_many.stub');
-        $belongs_to_many = "\n";
+        $belongs_to_many = "";
 
         /* @var ReferencingTableData $reference*/
         foreach ($this->references as $reference) {
