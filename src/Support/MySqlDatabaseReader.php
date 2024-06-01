@@ -24,6 +24,7 @@ use PulsarLabs\Generators\DataObjects\ColumnData;
 use PulsarLabs\Generators\Contracts\DatabaseReader;
 use PulsarLabs\Generators\Support\Enums\ColumnTypes;
 use PulsarLabs\Generators\Exceptions\InvalidTableException;
+use PulsarLabs\Generators\DataObjects\ReferencingTableData;
 
 class MySqlDatabaseReader implements DatabaseReader
 {
@@ -121,13 +122,33 @@ class MySqlDatabaseReader implements DatabaseReader
         return $foreignKeys;
     }
 
-    public function getReferencingTables(string $table)
+    public function getReferencingTables(string $table): array
     {
         $referencingTables = DB::select("SELECT TABLE_NAME, COLUMN_NAME, CONSTRAINT_NAME, REFERENCED_COLUMN_NAME
                                           FROM information_schema.KEY_COLUMN_USAGE
                                           WHERE REFERENCED_TABLE_NAME = ? AND CONSTRAINT_SCHEMA = ?", [$table, $this->schema]);
 
-        dd($referencingTables);
+        return $referencingTables;
+    }
+
+    protected function getReferencingTableData($referencing_table): ReferencingTableData
+    {
+        return new ReferencingTableData(
+            $referencing_table->TABLE_NAME,
+            $referencing_table->COLUMN_NAME,
+            $referencing_table->CONSTRAINT_NAME,
+            $referencing_table->REFERENCED_COLUMN_NAME
+        );
+    }
+
+    public function getReferencingTableObjects(string $table): array
+    {
+        $referencingTables = [];
+        foreach ($this->getReferencingTables($table) as $referencing_table) {
+            $referencingTables[] = $this->getReferencingTableData($referencing_table);
+        }
+
+        return $referencingTables;
     }
 
     protected function getColumnType($type): ColumnTypes

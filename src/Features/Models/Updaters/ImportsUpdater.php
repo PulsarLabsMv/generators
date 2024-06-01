@@ -11,6 +11,7 @@ class ImportsUpdater implements IsStubUpdater
     public function __construct(
         protected string $stub,
         protected array $columns,
+        protected array $references,
     ) {
     }
 
@@ -23,6 +24,10 @@ class ImportsUpdater implements IsStubUpdater
 
         if ($has_foreign_key) {
             $imports .= "use Illuminate\Database\Eloquent\Relations\BelongsTo;\n";
+        }
+
+        if (count($this->references) > 0) {
+            $imports .= "use Illuminate\Database\Eloquent\Relations\HasMany;\n";
         }
 
         // Import status classes

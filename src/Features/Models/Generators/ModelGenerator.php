@@ -9,6 +9,7 @@ use PulsarLabs\Generators\Support\Traits\HasAttributesProperty;
 use PulsarLabs\Generators\Features\Models\Updaters\ImportsUpdater;
 use PulsarLabs\Generators\Features\Models\Updaters\ClassNameUpdater;
 use PulsarLabs\Generators\Features\Models\Updaters\CastsPropertyUpdater;
+use PulsarLabs\Generators\Features\Models\Updaters\HasManyRelationsUpdater;
 use PulsarLabs\Generators\Features\Models\Updaters\FillablePropertyUpdater;
 use PulsarLabs\Generators\Support\GlobalUpdaters\RemovePlaceholdersUpdater;
 use PulsarLabs\Generators\Features\Models\Updaters\BelongsToRelationsUpdater;
@@ -59,11 +60,13 @@ class ModelGenerator
 
     protected function updateStubContent(string $stub, string $table_name, array $columns): string
     {
+        $references = $this->databaseReader->getReferencingTableObjects($table_name);
         $stub = (new ClassNameUpdater($stub, $table_name))->handle();
         $stub = (new FillablePropertyUpdater($stub, $columns, $this->getGuardedProperties($columns)))->handle();
         $stub = (new CastsPropertyUpdater($stub, $columns))->handle();
         $stub = (new BelongsToRelationsUpdater($stub, $columns))->handle();
-        $stub = (new ImportsUpdater($stub, $columns))->handle();
+        $stub = (new HasManyRelationsUpdater($stub, $references))->handle();
+        $stub = (new ImportsUpdater($stub, $columns, $references))->handle();
         $stub = (new RemovePlaceholdersUpdater($stub, $this->placeholders))->handle();
         return $stub;
     }
