@@ -11,7 +11,7 @@ A powerful and extendable tool for generating code in Laravel applications
 
 ## Testing
 
-You can run the tests with
+You can run the tests with the following command:
 
 ``` bash
 ./vendor/bin/phpunit
