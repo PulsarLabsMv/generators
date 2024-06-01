@@ -36,6 +36,11 @@ class ColumnData
         return $this->comment;
     }
 
+    public function isForeignKey(): bool
+    {
+        return $this->is_foreign_key;
+    }
+
     public function getStatusClassFromComment(): false|string
     {
         $comment_parts = explode("\\", $this->getComment());
@@ -63,6 +68,15 @@ class ColumnData
         }
 
         return str($this->referenced_table_name)->singular()->camel()->toString();
+    }
+
+    public function getPluralRelationshipName(): ?string
+    {
+        if ($this->referenced_table_name === null) {
+            return null;
+        }
+
+        return str($this->referenced_table_name)->plural()->camel()->toString();
     }
 
 }

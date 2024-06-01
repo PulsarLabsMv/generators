@@ -13,6 +13,7 @@ use PulsarLabs\Generators\Features\Models\Updaters\HasManyRelationsUpdater;
 use PulsarLabs\Generators\Features\Models\Updaters\FillablePropertyUpdater;
 use PulsarLabs\Generators\Support\GlobalUpdaters\RemovePlaceholdersUpdater;
 use PulsarLabs\Generators\Features\Models\Updaters\BelongsToRelationsUpdater;
+use PulsarLabs\Generators\Features\Models\Updaters\BelongsToManyRelationsUpdater;
 
 class ModelGenerator
 {
@@ -66,6 +67,7 @@ class ModelGenerator
         $stub = (new CastsPropertyUpdater($stub, $columns))->handle();
         $stub = (new BelongsToRelationsUpdater($stub, $columns))->handle();
         $stub = (new HasManyRelationsUpdater($stub, $references))->handle();
+        $stub = (new BelongsToManyRelationsUpdater($stub, $references, $this->databaseReader))->handle();
         $stub = (new ImportsUpdater($stub, $columns, $references))->handle();
         $stub = (new RemovePlaceholdersUpdater($stub, $this->placeholders))->handle();
         return $stub;

@@ -30,6 +30,14 @@ class ImportsUpdater implements IsStubUpdater
             $imports .= "use Illuminate\Database\Eloquent\Relations\HasMany;\n";
         }
 
+        $has_belong_to_many = collect($this->references)->filter(function ($reference) {
+            return $reference->referencingTableIsPivot();
+        })->count() > 0;
+
+        if ($has_belong_to_many) {
+            $imports .= "use Illuminate\Database\Eloquent\Relations\BelongsToMany;\n";
+        }
+
         // Import status classes
         foreach ($this->columns as $column) {
             if ($column->getComment()) {

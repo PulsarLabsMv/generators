@@ -1,0 +1,4 @@
+    public function {{ method }}(): BelongsToMany
+    {
+        return $this->belongsToMany({{ model }}::class, '{{ table_name }}');
+    }
