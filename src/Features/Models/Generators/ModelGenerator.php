@@ -26,7 +26,9 @@ class ModelGenerator
         '{{ attributes }}',
         '{{ fillable }}',
         '{{ casts }}',
-        '{{ relations }}',
+        '{{ belongsToRelations }}',
+        '{{ hasManyRelations }}',
+        '{{ manyToManyRelations }}',
         '{{ mutators }}',
         '{{ methods }}',
     ];

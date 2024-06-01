@@ -11,10 +11,7 @@ class {{ ModelClassName }} extends Model {{ interfaces }}
     use HasFactory;
     {{ traits }}
 
-    {{ attributes }}
-    {{ fillable }}
-    {{ casts }}
-    {{ relations }}
-    {{ mutators }}
-    {{ methods }}
+    {{ attributes }}{{ fillable }}{{ casts }}
+    {{ belongsToRelations }}{{ hasManyRelations }}{{ manyToManyRelations }}
+    {{ mutators }}{{ methods }}
 }

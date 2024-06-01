@@ -1,11 +1,11 @@
 <?php
 
-namespace PulsarLabs\Generators\Features\Models\Updaters;
+namespace Abunooh\Generators\Features\Models\Updaters;
 
 use PulsarLabs\Generators\DataObjects\ColumnData;
 use PulsarLabs\Generators\Contracts\IsStubUpdater;
 
-class BelongsToRelationsUpdater implements IsStubUpdater
+class HasManyRelationsUpdater implements IsStubUpdater
 {
 
     public function __construct(
@@ -36,6 +36,6 @@ class BelongsToRelationsUpdater implements IsStubUpdater
             ], $belongs_to_stub);
         }
 
-        return str_replace('{{ belongsToRelations }}', $belongs_to, $this->stub);
+        return str_replace('{{ relations }}', $belongs_to, $this->stub);
     }
 }

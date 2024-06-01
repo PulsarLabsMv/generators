@@ -1,0 +1,4 @@
+    public function {{ method }}(): HasMany
+    {
+        return $this->hasMany({{ model }}::class, '{{ foreign_key }}', '{{ local_key }}');
+    }

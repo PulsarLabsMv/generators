@@ -19,6 +19,8 @@ class CastsPropertyUpdater implements IsStubUpdater
 
     public function handle(): string
     {
+        $casts = "";
+
         /* @var ColumnData $column */
         foreach ($this->columns as $column) {
             if (! $column->getComment() && in_array($column->getName(), $this->excludedColumns())) {
@@ -39,7 +41,9 @@ class CastsPropertyUpdater implements IsStubUpdater
             $this->casts .= "\t\t'" . $column->getName() . "' => $cast_type,\n";
         }
 
-        $casts = "\n\t" . $this->casts_prefix . "\n" . $this->casts . $this->casts_suffix;
+        if ($this->casts) {
+            $casts = "\n\n\t" . $this->casts_prefix . "\n" . $this->casts . $this->casts_suffix;
+        }
 
         return str_replace('{{ casts }}', $casts, $this->stub);
     }
