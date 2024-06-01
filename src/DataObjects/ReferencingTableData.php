@@ -28,6 +28,16 @@ class ReferencingTableData
         return $this->referencing_column_name;
     }
 
+    public function getReferencingTableName(): string
+    {
+        return $this->referencing_table_name;
+    }
+
+    public function referencingTableIsPivot(): bool
+    {
+        return str($this->referencing_table_name)->singular()->toString() === $this->referencing_table_name;
+    }
+
     public function getLocalKey(): string
     {
         return $this->local_key;
