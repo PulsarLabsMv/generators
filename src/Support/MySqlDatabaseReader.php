@@ -38,7 +38,7 @@ class MySqlDatabaseReader implements DatabaseReader
         $this->schema = $schema ?? config('database.connections.mysql.database');
     }
 
-    public function getConnectionParameters(): array
+    protected function getConnectionParameters(): array
     {
         return [
             'dbname'   => config('database.connections.mysql.database'),
@@ -63,7 +63,7 @@ class MySqlDatabaseReader implements DatabaseReader
         return $schemaManager->listTableColumns($table);
     }
 
-    public function getColumnDataObject($column, array $foreign_keys): ColumnData
+    protected function getColumnDataObject($column, array $foreign_keys): ColumnData
     {
         $foreign_key_column_names = array_column($foreign_keys, 'COLUMN_NAME');
         $is_foreign_key = in_array($column->getName(), $foreign_key_column_names);
@@ -109,7 +109,7 @@ class MySqlDatabaseReader implements DatabaseReader
         return $columnObjects;
     }
 
-    public function getForeignKeys(string $table): array
+    protected function getForeignKeys(string $table): array
     {
         $foreignKeys = DB::select(
             "
@@ -122,7 +122,7 @@ class MySqlDatabaseReader implements DatabaseReader
         return $foreignKeys;
     }
 
-    public function getReferencingTables(string $table): array
+    protected function getReferencingTables(string $table): array
     {
         $referencingTables = DB::select("SELECT TABLE_NAME, COLUMN_NAME, CONSTRAINT_NAME, REFERENCED_COLUMN_NAME
                                           FROM information_schema.KEY_COLUMN_USAGE
