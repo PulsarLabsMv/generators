@@ -35,4 +35,34 @@ class ColumnData
     {
         return $this->comment;
     }
+
+    public function getStatusClassFromComment(): false|string
+    {
+        $comment_parts = explode("\\", $this->getComment());
+        return end($comment_parts);
+    }
+
+    public function getReferencedColumnName(): ?string
+    {
+        return $this->referenced_column_name;
+    }
+
+    public function getReferencedModelName(): ?string
+    {
+        if ($this->referenced_table_name === null) {
+            return null;
+        }
+
+        return str($this->referenced_table_name)->singular()->studly()->toString();
+    }
+
+    public function getRelationshipName(): ?string
+    {
+        if ($this->referenced_table_name === null) {
+            return null;
+        }
+
+        return str($this->referenced_table_name)->singular()->camel()->toString();
+    }
+
 }

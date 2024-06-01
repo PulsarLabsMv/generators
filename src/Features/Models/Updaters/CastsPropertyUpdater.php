@@ -33,7 +33,7 @@ class CastsPropertyUpdater implements IsStubUpdater
 
             $cast_type = "'$cast_type'";
             if ($column->getComment()) {
-                $cast_type = "\\" . $column->getComment() . '::class';
+                $cast_type = $column->getStatusClassFromComment() . '::class';
             }
 
             $this->casts .= "\t\t'" . $column->getName() . "' => $cast_type,\n";

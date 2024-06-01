@@ -6,10 +6,12 @@ use Illuminate\Console\Command;
 use PulsarLabs\Generators\Contracts\DatabaseReader;
 use PulsarLabs\Generators\Support\Traits\HasGuardedProperties;
 use PulsarLabs\Generators\Support\Traits\HasAttributesProperty;
+use PulsarLabs\Generators\Features\Models\Updaters\ImportsUpdater;
 use PulsarLabs\Generators\Features\Models\Updaters\ClassNameUpdater;
 use PulsarLabs\Generators\Features\Models\Updaters\CastsPropertyUpdater;
 use PulsarLabs\Generators\Features\Models\Updaters\FillablePropertyUpdater;
 use PulsarLabs\Generators\Support\GlobalUpdaters\RemovePlaceholdersUpdater;
+use PulsarLabs\Generators\Features\Models\Updaters\BelongsToRelationsUpdater;
 
 class ModelGenerator
 {
@@ -58,9 +60,8 @@ class ModelGenerator
         $stub = (new ClassNameUpdater($stub, $table_name))->handle();
         $stub = (new FillablePropertyUpdater($stub, $columns, $this->getGuardedProperties($columns)))->handle();
         $stub = (new CastsPropertyUpdater($stub, $columns))->handle();
-        //        $stub = str_replace('{{attributes}}', $this->getAttributesProperty($columns), $stub);
-        //        $stub = str_replace('{{relations}}', $this->getRelations($columns), $stub);
-        //        $stub = str_replace('{{methods}}', $this->getMethods($columns), $stub);
+        $stub = (new BelongsToRelationsUpdater($stub, $columns))->handle();
+        $stub = (new ImportsUpdater($stub, $columns))->handle();
         $stub = (new RemovePlaceholdersUpdater($stub, $this->placeholders))->handle();
         return $stub;
     }

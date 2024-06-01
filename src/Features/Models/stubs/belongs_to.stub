@@ -1,0 +1,4 @@
+    public function {{ method }}(): BelongsTo
+    {
+        return $this->belongsTo({{ model }}::class, '{{ foreign_key }}', '{{ owner_key }}');
+    }
