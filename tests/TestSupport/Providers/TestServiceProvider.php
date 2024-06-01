@@ -1,6 +1,6 @@
 <?php
 
-namespace Abunooh\Generators\Tests\TestSupport\Providers;
+namespace PulsarLabs\Generators\Tests\TestSupport\Providers;
 
 use Illuminate\Support\ServiceProvider;
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace Abunooh\Generators\Features\Models\Commands;
+namespace PulsarLabs\Generators\Features\Models\Commands;
 
 use Illuminate\Console\Command;
-use Abunooh\Generators\Features\Models\Generators\ModelGenerator;
+use PulsarLabs\Generators\Features\Models\Generators\ModelGenerator;
 
 class GenerateModelCommand extends Command
 {

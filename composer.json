@@ -1,9 +1,10 @@
 {
-    "name": "abunooh/generators",
+    "name": "pulsarlabs/generators",
     "description": "A powerful and extendable tool for generating code in Laravel applications",
-    "homepage": "https://github.com/Abunooh/generators",
+    "homepage": "https://github.com/PulsarLabsMv/generators",
     "license": "MIT",
     "keywords": [
+        "pulsar labs",
         "abunooh",
         "laravel",
         "generators"
@@ -27,12 +28,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Abunooh\\Generators\\": "src/"
+            "PulsarLabs\\Generators\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Abunooh\\Generators\\Tests\\": "tests/"
+            "PulsarLabs\\Generators\\Tests\\": "tests/"
         }
     },
     "extra": {
@@ -41,7 +42,7 @@
         },
         "laravel": {
             "providers": [
-                "Abunooh\\Generators\\GeneratorsServiceProvider"
+                "PulsarLabs\\Generators\\GeneratorsServiceProvider"
             ]
         }
     },

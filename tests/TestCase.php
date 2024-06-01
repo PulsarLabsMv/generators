@@ -1,14 +1,13 @@
 <?php
 
-namespace Abunooh\Generators\Tests;
+namespace PulsarLabs\Generators\Tests;
 
 use Orchestra\Testbench\TestCase as BaseTestCase;
-use Abunooh\Generators\GeneratorsServiceProvider;
-use Abunooh\Generators\Tests\TestSupport\Providers\TestServiceProvider;
+use PulsarLabs\Generators\GeneratorsServiceProvider;
+use PulsarLabs\Generators\Tests\TestSupport\Providers\TestServiceProvider;
 
 abstract class TestCase extends BaseTestCase
 {
-
     public function setUp(): void
     {
         parent::setUp();

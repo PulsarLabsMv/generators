@@ -1,6 +1,6 @@
 <?php
 
-namespace Abunooh\Generators\Contracts;
+namespace PulsarLabs\Generators\Contracts;
 
 interface IsStubUpdater
 {

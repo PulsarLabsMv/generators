@@ -1,8 +1,8 @@
 <?php
 
-namespace Abunooh\Generators\Tests\Unit;
+namespace PulsarLabs\Generators\Tests\Unit;
 
-use Abunooh\Generators\Tests\TestCase;
+use PulsarLabs\Generators\Tests\TestCase;
 
 class ExampleTest extends TestCase
 {

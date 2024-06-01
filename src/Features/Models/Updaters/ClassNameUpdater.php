@@ -1,17 +1,15 @@
 <?php
 
-namespace Abunooh\Generators\Features\Models\Updaters;
+namespace PulsarLabs\Generators\Features\Models\Updaters;
 
-use Abunooh\Generators\Contracts\IsStubUpdater;
+use PulsarLabs\Generators\Contracts\IsStubUpdater;
 
 class ClassNameUpdater implements IsStubUpdater
 {
-
     public function __construct(
         protected string $stub,
         protected string $table_name,
-    )
-    {
+    ) {
     }
 
     public function handle(): string

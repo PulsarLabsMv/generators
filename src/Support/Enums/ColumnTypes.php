@@ -1,6 +1,6 @@
 <?php
 
-namespace Abunooh\Generators\Support\Enums;
+namespace PulsarLabs\Generators\Support\Enums;
 
 enum ColumnTypes: string
 {

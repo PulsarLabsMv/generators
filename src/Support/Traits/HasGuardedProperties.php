@@ -1,10 +1,9 @@
 <?php
 
-namespace Abunooh\Generators\Support\Traits;
+namespace PulsarLabs\Generators\Support\Traits;
 
 trait HasGuardedProperties
 {
-
     protected function getGuardedProperties(): array
     {
         return [

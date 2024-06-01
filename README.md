@@ -1,8 +1,8 @@
 # Generators
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/abunooh/generators.svg?style=flat-square)](https://packagist.org/packages/abunooh/generators)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/pulsarlabs/generators.svg?style=flat-square)](https://packagist.org/packages/pulsarlabs/generators)
 [![Test Status](../../actions/workflows/run-tests.yml/badge.svg)](../../actions/workflows/run-tests.yml)
-[![Total Downloads](https://img.shields.io/packagist/dt/abunooh/generators.svg?style=flat-square)](https://packagist.org/packages/abunooh/generators)
+[![Total Downloads](https://img.shields.io/packagist/dt/pulsarlabs/generators.svg?style=flat-square)](https://packagist.org/packages/pulsarlabs/generators)
 
 
 
@@ -27,7 +27,7 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ## Credits
 
-- [Abunooh](https://github.com/ibnnajjaar)
+- [PulsarLabs](https://github.com/ibnnajjaar)
 - [All Contributors](../../contributors)
 
 ## License

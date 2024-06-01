@@ -1,23 +1,19 @@
 <?php
 
-namespace Abunooh\Generators\Features\Models\Generators;
-
+namespace PulsarLabs\Generators\Features\Models\Generators;
 
 use Illuminate\Console\Command;
-use Doctrine\DBAL\Schema\Column;
-use Abunooh\Generators\Contracts\DatabaseReader;
-use Abunooh\Generators\Support\Traits\HasModelClassName;
-use Abunooh\Generators\Support\Traits\HasFillableProperty;
-use Abunooh\Generators\Support\Traits\HasGuardedProperties;
-use Abunooh\Generators\Support\Traits\HasAttributesProperty;
-use Abunooh\Generators\Features\Models\Updaters\ClassNameUpdater;
-use Abunooh\Generators\Features\Models\Updaters\FillablePropertyUpdater;
-use Abunooh\Generators\Support\GlobalUpdaters\RemovePlaceholdersUpdater;
+use PulsarLabs\Generators\Contracts\DatabaseReader;
+use PulsarLabs\Generators\Support\Traits\HasGuardedProperties;
+use PulsarLabs\Generators\Support\Traits\HasAttributesProperty;
+use PulsarLabs\Generators\Features\Models\Updaters\ClassNameUpdater;
+use PulsarLabs\Generators\Features\Models\Updaters\FillablePropertyUpdater;
+use PulsarLabs\Generators\Support\GlobalUpdaters\RemovePlaceholdersUpdater;
 
 class ModelGenerator
 {
-    use HasGuardedProperties;
     use HasAttributesProperty;
+    use HasGuardedProperties;
 
     protected DatabaseReader $databaseReader;
     protected array $placeholders = [
@@ -35,7 +31,7 @@ class ModelGenerator
     public function __construct()
     {
         $databaseReaderClass = config('generators.database_reader');
-        $this->databaseReader = new $databaseReaderClass;
+        $this->databaseReader = new $databaseReaderClass();
     }
 
     public function handle(Command $command, string $table_name): void
@@ -60,10 +56,10 @@ class ModelGenerator
     {
         $stub = (new ClassNameUpdater($stub, $table_name))->handle();
         $stub = (new FillablePropertyUpdater($stub, $columns, $this->getGuardedProperties()))->handle();
-//        $stub = str_replace('{{attributes}}', $this->getAttributesProperty($columns), $stub);
-//        $stub = str_replace('{{casts}}', $this->getCasts($columns), $stub);
-//        $stub = str_replace('{{relations}}', $this->getRelations($columns), $stub);
-//        $stub = str_replace('{{methods}}', $this->getMethods($columns), $stub);
+        //        $stub = str_replace('{{attributes}}', $this->getAttributesProperty($columns), $stub);
+        //        $stub = str_replace('{{casts}}', $this->getCasts($columns), $stub);
+        //        $stub = str_replace('{{relations}}', $this->getRelations($columns), $stub);
+        //        $stub = str_replace('{{methods}}', $this->getMethods($columns), $stub);
         $stub = (new RemovePlaceholdersUpdater($stub, $this->placeholders))->handle();
         return $stub;
     }

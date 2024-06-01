@@ -1,12 +1,11 @@
 <?php
 
-namespace Abunooh\Generators\DataObjects;
+namespace PulsarLabs\Generators\DataObjects;
 
-use Abunooh\Generators\Support\Enums\ColumnTypes;
+use PulsarLabs\Generators\Support\Enums\ColumnTypes;
 
 class ColumnData
 {
-
     public function __construct(
         public string      $name,
         public ColumnTypes $type,
@@ -14,8 +13,7 @@ class ColumnData
         public bool        $nullable,
         public bool        $autoIncrement,
         public bool        $unsigned,
-    )
-    {
+    ) {
     }
 
 

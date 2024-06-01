@@ -1,12 +1,11 @@
 <?php
 
-namespace Abunooh\Generators;
+namespace PulsarLabs\Generators;
 
 use Illuminate\Support\ServiceProvider;
 
 class GeneratorsServiceProvider extends ServiceProvider
 {
-
     public function boot(): void
     {
 

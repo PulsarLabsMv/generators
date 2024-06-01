@@ -1,17 +1,16 @@
 <?php
 
-namespace Abunooh\Generators\Support;
+namespace PulsarLabs\Generators\Support;
 
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Types\DateType;
+use Doctrine\DBAL\Types\GuidType;
 use Doctrine\DBAL\Types\JsonType;
 use Doctrine\DBAL\Types\TextType;
 use Doctrine\DBAL\Types\TimeType;
-use Doctrine\DBAL\Types\GuidType;
 use Doctrine\DBAL\Types\FloatType;
 use Illuminate\Support\Facades\DB;
 use Doctrine\DBAL\Types\BigIntType;
@@ -21,14 +20,13 @@ use Doctrine\DBAL\Types\DecimalType;
 use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\DBAL\Types\DateTimeType;
 use Illuminate\Support\Facades\Schema;
-use Abunooh\Generators\DataObjects\ColumnData;
-use Abunooh\Generators\Contracts\DatabaseReader;
-use Abunooh\Generators\Support\Enums\ColumnTypes;
-use Abunooh\Generators\Exceptions\InvalidTableException;
+use PulsarLabs\Generators\DataObjects\ColumnData;
+use PulsarLabs\Generators\Contracts\DatabaseReader;
+use PulsarLabs\Generators\Support\Enums\ColumnTypes;
+use PulsarLabs\Generators\Exceptions\InvalidTableException;
 
 class MySqlDatabaseReader implements DatabaseReader
 {
-
     protected Connection $connection;
 
     public function __construct()
@@ -92,7 +90,8 @@ class MySqlDatabaseReader implements DatabaseReader
 
     public function getForeignKeys(string $table)
     {
-        $foreignKeys = DB::select("
+        $foreignKeys = DB::select(
+            "
             SELECT CONSTRAINT_NAME, COLUMN_NAME, REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME
             FROM information_schema.KEY_COLUMN_USAGE
             WHERE TABLE_NAME = ? AND REFERENCED_TABLE_NAME IS NOT NULL",
@@ -148,4 +147,3 @@ class MySqlDatabaseReader implements DatabaseReader
         return ColumnTypes::String;
     }
 }
-

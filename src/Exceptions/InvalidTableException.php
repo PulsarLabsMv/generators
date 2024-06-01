@@ -1,6 +1,6 @@
 <?php
 
-namespace Abunooh\Generators\Exceptions;
+namespace PulsarLabs\Generators\Exceptions;
 
 use Exception;
 

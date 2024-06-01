@@ -1,8 +1,8 @@
 <?php
 
-namespace Abunooh\Generators\Features\Models\Updaters;
+namespace PulsarLabs\Generators\Features\Models\Updaters;
 
-use Abunooh\Generators\Contracts\IsStubUpdater;
+use PulsarLabs\Generators\Contracts\IsStubUpdater;
 
 class FillablePropertyUpdater implements IsStubUpdater
 {
@@ -14,8 +14,7 @@ class FillablePropertyUpdater implements IsStubUpdater
         protected string $stub,
         protected array $columns,
         protected array $guarded_properties,
-    )
-    {
+    ) {
 
     }
 

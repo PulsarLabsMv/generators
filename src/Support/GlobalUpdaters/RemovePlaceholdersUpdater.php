@@ -1,17 +1,15 @@
 <?php
 
-namespace Abunooh\Generators\Support\GlobalUpdaters;
+namespace PulsarLabs\Generators\Support\GlobalUpdaters;
 
-use Abunooh\Generators\Contracts\IsStubUpdater;
+use PulsarLabs\Generators\Contracts\IsStubUpdater;
 
 class RemovePlaceholdersUpdater implements IsStubUpdater
 {
-
     public function __construct(
         protected string $stub,
         protected array $placeholders,
-    )
-    {
+    ) {
     }
 
     public function handle(): string
