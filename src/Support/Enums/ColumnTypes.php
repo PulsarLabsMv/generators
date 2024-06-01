@@ -21,4 +21,21 @@ enum ColumnTypes: string
     case Uuid = 'uuid';
 
 
+    public static function castTypes(): array
+    {
+        return [
+            self::Boolean?->value  => 'boolean',
+            self::Date?->value     => 'date',
+            self::DateTime?->value => 'datetime',
+            self::Decimal?->value  => 'decimal',
+            self::Float?->value    => 'float',
+            self::Integer?->value  => 'integer',
+            self::Json?->value     => 'array',
+        ];
+    }
+
+    public function getCastType(): ?string
+    {
+        return self::castTypes()[$this->value] ?? null;
+    }
 }

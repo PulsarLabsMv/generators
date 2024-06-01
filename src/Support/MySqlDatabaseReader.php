@@ -83,6 +83,7 @@ class MySqlDatabaseReader implements DatabaseReader
             ! $column->getNotnull(),
             $column->getAutoincrement(),
             $column->getUnsigned(),
+            $column->getComment(),
             $is_foreign_key,
             $referenced_table_name,
             $referenced_column_name
