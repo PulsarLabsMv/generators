@@ -2,6 +2,7 @@
 
 namespace PulsarLabs\Generators\Tests;
 
+use Illuminate\Filesystem\Filesystem;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use PulsarLabs\Generators\GeneratorsServiceProvider;
 use PulsarLabs\Generators\Tests\TestSupport\Providers\TestServiceProvider;
@@ -36,5 +37,12 @@ abstract class TestCase extends BaseTestCase
             GeneratorsServiceProvider::class,
             TestServiceProvider::class
         ];
+    }
+
+    protected function deleteFile(string $path): void
+    {
+        /** @var Filesystem $files */
+        $files = $this->app->make(Filesystem::class);
+        $files->delete($path);
     }
 }
