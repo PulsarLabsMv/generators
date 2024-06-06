@@ -3,6 +3,7 @@
 namespace PulsarLabs\Generators;
 
 use Illuminate\Support\ServiceProvider;
+use PulsarLabs\Generators\GenerateCrudCommand;
 
 class GeneratorsServiceProvider extends ServiceProvider
 {
@@ -16,7 +17,9 @@ class GeneratorsServiceProvider extends ServiceProvider
             ], 'generators-config');
         }
 
-        $this->commands(config('generators.generators'));
+        $this->commands(array_merge([
+            GenerateCrudCommand::class,
+        ], config('generators.generators')));
 
     }
 
