@@ -3,9 +3,12 @@
 namespace PulsarLabs\Generators\Tests\Feature\Commands;
 
 use PulsarLabs\Generators\Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class GenerateModelCommandTest extends TestCase
 {
+    use RefreshDatabase;
+
     /** @test */
     public function it_can_generate_model_file(): void
     {
