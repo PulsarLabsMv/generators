@@ -25,11 +25,18 @@ class GenerateModelCommandTest extends TestCase
     public function it_can_generate_model_file(): void
     {
         $model_path = $this->app->path('Models/Category.php');
+        $expected_output = $this->getTestStubContents('Category.php');
 
         $this->artisan('generate:model', ['table' => 'categories'])
             ->assertSuccessful();
 
         $this->assertFileExists($model_path);
+
+        $actual_content = $this->getGeneratedFileContents($model_path);
+        $actual_content = str_replace(["\r", "\n", "\t", " "], '', $actual_content);
+        $expected_output = str_replace(["\r", "\n", "\t", " "], '', $expected_output);
+
+        $this->assertEquals($expected_output, $actual_content);
     }
 
 }

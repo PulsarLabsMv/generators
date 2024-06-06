@@ -45,4 +45,19 @@ abstract class TestCase extends BaseTestCase
         $files = $this->app->make(Filesystem::class);
         $files->delete($path);
     }
+
+    protected function getTestStubPath(string $name): string
+    {
+        return __DIR__ . '/stubs/' . $name;
+    }
+
+    protected function getTestStubContents(string $name): string
+    {
+        return file_get_contents($this->getTestStubPath($name));
+    }
+
+    protected function getGeneratedFileContents(string $file): string
+    {
+        return file_get_contents($file);
+    }
 }
