@@ -5,7 +5,6 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/pulsarlabs/generators.svg?style=flat-square)](https://packagist.org/packages/pulsarlabs/generators)
 
 
-
 ## Introduction
 A powerful and extendable tool for generating code in Laravel applications
 
