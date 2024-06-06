@@ -4,9 +4,9 @@ This Laravel package aims to simplify the creation of CRUD (Create, Read, Update
 
 ## Features Implemented:
 - [x] Model Generation: Creates Eloquent models with properties like fillable, attributes, casts and relationships.
+- [x] Permissions Generation: Automatically adds permissions to the permissions seeder.
 
 ## TODOs:
-- [ ] Permissions Generation: Automatically adds permissions to the permissions seeder.
 - [ ] Policy Generation: Generates policy classes for authorization.
 - [ ] Form Request Generation: Generates form request classes for validation.
 - [ ] Controller Generation: Automatically generates resource controllers with standard CRUD methods.
