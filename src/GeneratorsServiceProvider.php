@@ -3,7 +3,6 @@
 namespace PulsarLabs\Generators;
 
 use Illuminate\Support\ServiceProvider;
-use PulsarLabs\Generators\GenerateCrudCommand;
 
 class GeneratorsServiceProvider extends ServiceProvider
 {

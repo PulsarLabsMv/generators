@@ -2,12 +2,10 @@
 
 namespace PulsarLabs\Generators\Features\Models\Updaters;
 
-use PulsarLabs\Generators\DataObjects\ColumnData;
 use PulsarLabs\Generators\Contracts\IsStubUpdater;
 
 class BelongsToRelationsUpdater implements IsStubUpdater
 {
-
     public function __construct(
         protected string $stub,
         protected array $columns,

@@ -23,8 +23,8 @@ use Illuminate\Support\Facades\Schema;
 use PulsarLabs\Generators\DataObjects\ColumnData;
 use PulsarLabs\Generators\Contracts\DatabaseReader;
 use PulsarLabs\Generators\Support\Enums\ColumnTypes;
-use PulsarLabs\Generators\Exceptions\InvalidTableException;
 use PulsarLabs\Generators\DataObjects\ReferencingTableData;
+use PulsarLabs\Generators\Exceptions\InvalidTableException;
 
 class MySqlDatabaseReader implements DatabaseReader
 {
@@ -32,8 +32,7 @@ class MySqlDatabaseReader implements DatabaseReader
 
     public function __construct(
         protected ?string $schema = null,
-    )
-    {
+    ) {
         $this->connection = DriverManager::getConnection($this->getConnectionParameters());
         $this->schema = $schema ?? config('database.connections.mysql.database');
     }

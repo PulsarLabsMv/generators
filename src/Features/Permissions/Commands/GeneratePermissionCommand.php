@@ -3,7 +3,6 @@
 namespace PulsarLabs\Generators\Features\Permissions\Commands;
 
 use Illuminate\Console\Command;
-use PulsarLabs\Generators\Features\Models\Generators\ModelGenerator;
 use PulsarLabs\Generators\Features\Permissions\Generators\PermissionGenerator;
 
 class GeneratePermissionCommand extends Command

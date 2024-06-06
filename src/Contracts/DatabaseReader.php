@@ -2,8 +2,6 @@
 
 namespace PulsarLabs\Generators\Contracts;
 
-use PulsarLabs\Generators\DataObjects\ColumnData;
-
 interface DatabaseReader
 {
     public function listColumns(string $table): array;

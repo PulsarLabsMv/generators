@@ -2,7 +2,6 @@
 
 namespace PulsarLabs\Generators\DataObjects;
 
-
 class ReferencingTableData
 {
     public function __construct(

@@ -2,7 +2,6 @@
 
 namespace PulsarLabs\Generators\Features\Models\Updaters;
 
-use Doctrine\DBAL\Schema\Column;
 use PulsarLabs\Generators\DataObjects\ColumnData;
 use PulsarLabs\Generators\Contracts\IsStubUpdater;
 use PulsarLabs\Generators\Contracts\DatabaseReader;
@@ -10,7 +9,6 @@ use PulsarLabs\Generators\DataObjects\ReferencingTableData;
 
 class BelongsToManyRelationsUpdater implements IsStubUpdater
 {
-
     public function __construct(
         protected string $stub,
         protected array $references,

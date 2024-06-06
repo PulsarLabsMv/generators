@@ -2,13 +2,11 @@
 
 namespace PulsarLabs\Generators\Features\Models\Updaters;
 
-use PulsarLabs\Generators\DataObjects\ColumnData;
 use PulsarLabs\Generators\Contracts\IsStubUpdater;
 use PulsarLabs\Generators\DataObjects\ReferencingTableData;
 
 class HasManyRelationsUpdater implements IsStubUpdater
 {
-
     public function __construct(
         protected string $stub,
         protected array $references,

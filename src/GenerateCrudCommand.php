@@ -3,7 +3,6 @@
 namespace PulsarLabs\Generators;
 
 use Illuminate\Console\Command;
-use PulsarLabs\Generators\Features\Models\Generators\ModelGenerator;
 
 class GenerateCrudCommand extends Command
 {
