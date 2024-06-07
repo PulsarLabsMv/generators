@@ -1,0 +1,35 @@
+<?php
+
+namespace App\Policies;
+
+use App\Models\{{ ModelClassName }};
+use App\Models\User;
+
+class {{ ModelClassName }}Policy
+{
+
+    public function viewAny(User $user): bool
+    {
+        return $user->can('view {{ model plural lowercase }}');
+    }
+
+    public function view(User $user, {{ ModelClassName }} ${{ model_variable }}): bool
+    {
+        return $user->can('view {{ model plural lowercase }}');
+    }
+
+    public function create(User $user): bool
+    {
+        return $user->can('edit {{ model plural lowercase }}');
+    }
+
+    public function update(User $user, {{ ModelClassName }} ${{ model_variable }}): bool
+    {
+        return $user->can('edit {{ model plural lowercase }}');
+    }
+
+    public function delete(User $user, {{ ModelClassName }} ${{ model_variable }}): bool
+    {
+        return $user->can('delete {{ model plural lowercase }}');
+    }
+}
