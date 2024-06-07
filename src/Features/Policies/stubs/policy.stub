@@ -13,7 +13,7 @@ class {{ ModelClassName }}Policy
         return $user->can('view {{ model plural lowercase }}');
     }
 
-    public function view(User $user, {{ ModelClassName }} ${{ model_variable }}): bool
+    public function view(User $user, {{ ModelClassName }} ${{ ModelVariable }}): bool
     {
         return $user->can('view {{ model plural lowercase }}');
     }
@@ -23,12 +23,12 @@ class {{ ModelClassName }}Policy
         return $user->can('edit {{ model plural lowercase }}');
     }
 
-    public function update(User $user, {{ ModelClassName }} ${{ model_variable }}): bool
+    public function update(User $user, {{ ModelClassName }} ${{ ModelVariable }}): bool
     {
         return $user->can('edit {{ model plural lowercase }}');
     }
 
-    public function delete(User $user, {{ ModelClassName }} ${{ model_variable }}): bool
+    public function delete(User $user, {{ ModelClassName }} ${{ ModelVariable }}): bool
     {
         return $user->can('delete {{ model plural lowercase }}');
     }

@@ -15,6 +15,6 @@ class ModelVariableUpdater implements IsStubUpdater
     public function handle(): string
     {
         $model_variable_name = str($this->table_name)->lower()->slug('_')->singular();
-        return str_replace('{{ model_variable }}', $model_variable_name, $this->stub);
+        return str_replace('{{ ModelVariable }}', $model_variable_name, $this->stub);
     }
 }

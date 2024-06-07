@@ -22,7 +22,14 @@ class RulesUpdater
         // remove exclude columns
         $columns = $this->removeExcludeColumns($this->columns);
 
-        dd($columns);
+        foreach ($columns as $column) {
+            $this->rules .= $this->getRules($column);
+        }
+
+        $this->rules = substr($this->rules, 0, -1);
+        $this->rules = substr($this->rules, 3);
+
+        return str_replace('{{ Rules }}', $this->rules, $this->stub);
     }
 
     private function removeExcludeColumns(array $columns): array
@@ -30,5 +37,10 @@ class RulesUpdater
         return array_filter($columns, function (ColumnData $column) {
             return ! in_array($column->name, $this->exclude_columns);
         });
+    }
+
+    private function getRules(ColumnData $column): string
+    {
+        return "\t\t\t'{$column->name}' => ['required', 'string'],\n";
     }
 }

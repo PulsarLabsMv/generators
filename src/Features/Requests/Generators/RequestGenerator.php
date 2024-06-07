@@ -5,6 +5,7 @@ namespace PulsarLabs\Generators\Features\Requests\Generators;
 use Illuminate\Console\Command;
 use PulsarLabs\Generators\Contracts\DatabaseReader;
 use PulsarLabs\Generators\Features\Requests\Updaters\RulesUpdater;
+use PulsarLabs\Generators\Features\Policies\Updaters\ModelVariableUpdater;
 
 class RequestGenerator
 {
@@ -46,8 +47,8 @@ class RequestGenerator
     {
         $references = $this->databaseReader->getReferencingTableObjects($table_name);
         $columns = $this->databaseReader->getColumnObjects($table_name);
+        $stub = (new ModelVariableUpdater($stub, $table_name))->handle();
         $stub = $this->updateRequestFileName($stub, $table_name);
-        $stub = $this->updateModelVariable($stub, $table_name);
         $stub = $this->updateModelRouteParameter($stub, $table_name);
         $stub = (new RulesUpdater($stub, $table_name, $columns))->handle();
         return $stub;
@@ -57,12 +58,6 @@ class RequestGenerator
     {
         $request_file_name = str($table_name)->studly()->singular()->toString() . 'Request';
         return str_replace('{{ RequestFileName }}', $request_file_name, $stub);
-    }
-
-    private function updateModelVariable(string $stub, string $table_name): string
-    {
-        $model_variable = str($table_name)->slug('_')->singular()->toString();
-        return str_replace('{{ ModelVariable }}', $model_variable, $stub);
     }
 
     private function updateModelRouteParameter(string $stub, string $table_name): string
