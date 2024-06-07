@@ -7,8 +7,11 @@ This Laravel package aims to simplify the creation of CRUD (Create, Read, Update
 - [x] Permissions Generation: Automatically adds permissions to the permissions seeder.
 - [x] Policy Generation: Generates policy classes for authorization.
 
-## TODOs:
+## Ongoing
+Afeef:
 - [ ] Form Request Generation: Generates form request classes for validation.
+
+## TODOs:
 - [ ] Controller Generation: Automatically generates resource controllers with standard CRUD methods.
 - [ ] Route Registration: Registers the necessary resource routes in the web.php file.
 - [ ] View Generation: Creates basic Blade templates for index, create, edit, and show pages.
