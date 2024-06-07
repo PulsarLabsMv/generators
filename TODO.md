@@ -10,13 +10,14 @@ This Laravel package aims to simplify the creation of CRUD (Create, Read, Update
 ## Ongoing
 Afeef:
 - [ ] Form Request Generation: Generates form request classes for validation.
-
-## TODOs:
+Ibrahim: 
 - [ ] Controller Generation: Automatically generates resource controllers with standard CRUD methods.
 - [ ] Route Registration: Registers the necessary resource routes in the web.php file.
+- [ ] API Resource Support: Implement the generation of API resource controllers and routes.
+      
+## TODOs:
 - [ ] View Generation: Creates basic Blade templates for index, create, edit, and show pages.
 - [ ] Factory Generation: Automatically generate factories for test data population.
-- [ ] API Resource Support: Implement the generation of API resource controllers and routes.
 - [ ] Polymorphic Relationships: Add support for polymorphic relationships in models.
 - [ ] Soft Deletes: Add support for soft deletes in models and migrations.
 - [ ] Testing Scaffolding: Generate basic PHPUnit test cases for CRUD operations.
