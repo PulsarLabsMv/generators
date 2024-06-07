@@ -16,15 +16,12 @@ jobs:
       fail-fast: true
       matrix:
         os: [ ubuntu-latest ]
-        php: [ 8.3, 8.2 ]
-        laravel: [ 11.*, 10.* ]
+        php: [ 8.3 ]
+        laravel: [ 11.* ]
         stability: [ prefer-lowest, prefer-stable ]
         include:
           -   laravel: 11.*
               testbench: 9.*
-              carbon: ^2.63
-          -   laravel: 10.*
-              testbench: 8.*
               carbon: ^2.63
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
@@ -40,7 +37,7 @@ jobs:
           MYSQL_ROOT_PASSWORD: secretroot
         ports:
           - 3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3 --wait
 
     steps:
       -   name: Checkout code
@@ -50,6 +47,7 @@ jobs:
         run: |
           mysql --version
           sudo apt-get install -y mysql-client
+          sleep 15 # Wait for MySQL to be ready
           mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uuser -psecret -e "SHOW DATABASES"
 
       -   name: Setup PHP
@@ -70,4 +68,4 @@ jobs:
             DB_DATABASE: generators
             DB_USERNAME: user
             DB_PASSWORD: secret
-            DB_PORT: ${{ job.services.mysql.ports[3306] }}
+            DB_PORT: 3306
