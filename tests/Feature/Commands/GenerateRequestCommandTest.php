@@ -12,22 +12,22 @@ class GenerateRequestCommandTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->deleteFile($this->app->path('Http/Requests/CategoryRequest.php'));
+        $this->deleteFile($this->app->path('Http/Requests/PostRequest.php'));
     }
 
     protected function tearDown(): void
     {
-        $this->deleteFile($this->app->path('Http/Requests/CategoryRequest.php'));
+        $this->deleteFile($this->app->path('Http/Requests/PostRequest.php'));
         parent::tearDown();
     }
 
     /** @test */
     public function it_can_generate_request_file(): void
     {
-        $file_path = $this->app->path('Http/Requests/CategoryPolicy.php');
-        $expected_output = $this->getTestStubContents('request.stub');
+        $file_path = $this->app->path('Http/Requests/PostRequest.php');
+        $expected_output = $this->getTestStubContents('Request.php');
 
-        $this->artisan('generate:request', ['table' => 'categories'])
+        $this->artisan('generate:request', ['table' => 'posts'])
             ->assertSuccessful();
 
         $this->assertFileExists($file_path);
