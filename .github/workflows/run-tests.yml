@@ -33,8 +33,9 @@ jobs:
       mysql:
         image: mysql:8.0
         env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_DATABASE: generators
-          MYSQL_USER: user
+          MYSQL_USER: root
           MYSQL_PASSWORD: secret
           MYSQL_ROOT_PASSWORD: secretroot
         ports:
@@ -67,6 +68,5 @@ jobs:
           run: vendor/bin/phpunit
           env:
             DB_DATABASE: generators
-            DB_USERNAME: user
-            DB_PASSWORD: secret
+            DB_USERNAME: root
             DB_PORT: ${{ job.services.mysql.ports[3306] }}
