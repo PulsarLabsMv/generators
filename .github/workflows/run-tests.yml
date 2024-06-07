@@ -1,64 +1,65 @@
 name: tests
 
 on:
-    pull_request:
-        branches:
-            - main
-    push:
-        branches:
-            - main
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
 
 jobs:
-    tests:
-        runs-on: ${{ matrix.os }}
+  tests:
+    runs-on: ${{ matrix.os }}
 
-        strategy:
-            fail-fast: true
-            matrix:
-                os: [ ubuntu-latest ]
-                php: [ 8.3, 8.2 ]
-                laravel: [ 11.*, 10.* ]
-                stability: [ prefer-lowest, prefer-stable ]
-                include:
-                    -   laravel: 11.*
-                        testbench: 9.*
-                        carbon: ^2.63
-                    -   laravel: 10.*
-                        testbench: 8.*
-                        carbon: ^2.63
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ ubuntu-latest ]
+        php: [ 8.3, 8.2 ]
+        laravel: [ 11.*, 10.* ]
+        stability: [ prefer-lowest, prefer-stable ]
+        include:
+          -   laravel: 11.*
+              testbench: 9.*
+              carbon: ^2.63
+          -   laravel: 10.*
+              testbench: 8.*
+              carbon: ^2.63
 
-        name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
+    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
 
-        services:
-          mysql:
-            image: mysql:8.0
-            env:
-              MYSQL_USER: root
-              MYSQL_PASSWORD: secret
-              MYSQL_DATABASE: generators
-              MYSQL_ROOT_PASSWORD: secret
-            ports:
-              - 3306
-            options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-        steps:
-            -   name: Checkout code
-                uses: actions/checkout@v4
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_USER: user
+          MYSQL_PASSWORD: secret
+          MYSQL_DATABASE: generators
+          MYSQL_ROOT_PASSWORD: secretroot
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
-            -   name: Setup PHP
-                uses: shivammathur/setup-php@v2
-                with:
-                    php-version: ${{ matrix.php }}
-                    extensions: curl, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, iconv
-                    coverage: none\
+    steps:
+      -   name: Checkout code
+          uses: actions/checkout@v4
 
-            -   name: Install dependencies
-                run: |
-                    composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "nesbot/carbon:${{ matrix.carbon }}" --no-interaction --no-update
-                    composer update --${{ matrix.stability }} --prefer-dist --no-interaction
+      -   name: Setup PHP
+          uses: shivammathur/setup-php@v2
+          with:
+            php-version: ${{ matrix.php }}
+            extensions: curl, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, pdo_mysql, iconv
+            coverage: none
 
-            -   name: Execute tests
-                run: vendor/bin/phpunit
-                env:
-                    DB_USERNAME: root
-                    DB_PASSWORD: secret
-                    DB_PORT: ${{ job.services.mysql.ports[3306] }}
+      -   name: Install dependencies
+          run: |
+            composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "nesbot/carbon:${{ matrix.carbon }}" --no-interaction --no-update
+            composer update --${{ matrix.stability }} --prefer-dist --no-interaction
+
+      -   name: Execute tests
+          run: vendor/bin/phpunit
+          env:
+            DB_USERNAME: user
+            DB_PASSWORD: secret
+            DB_PORT: ${{ job.services.mysql.ports[3306] }}
