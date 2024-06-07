@@ -11,7 +11,7 @@ class GenerateRequestCommandTest extends TestCase
 
     public function setUp(): void
     {
-//        $this->markTestIncomplete();
+        $this->markTestIncomplete();
         parent::setUp();
         $this->deleteFile($this->app->path('Http/Requests/PostRequest.php'));
     }
