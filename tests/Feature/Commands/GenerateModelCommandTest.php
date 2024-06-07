@@ -33,6 +33,7 @@ class GenerateModelCommandTest extends TestCase
         $this->assertFileExists($model_path);
 
         $actual_content = $this->getGeneratedFileContents($model_path);
+
         $actual_content = str_replace(["\r", "\n", "\t", " "], '', $actual_content);
         $expected_output = str_replace(["\r", "\n", "\t", " "], '', $expected_output);
 
