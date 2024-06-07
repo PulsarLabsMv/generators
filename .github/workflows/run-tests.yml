@@ -33,9 +33,9 @@ jobs:
       mysql:
         image: mysql:8.0
         env:
+          MYSQL_DATABASE: generators
           MYSQL_USER: user
           MYSQL_PASSWORD: secret
-          MYSQL_DATABASE: generators
           MYSQL_ROOT_PASSWORD: secretroot
         ports:
           - 3306
@@ -44,6 +44,12 @@ jobs:
     steps:
       -   name: Checkout code
           uses: actions/checkout@v4
+
+      - name: Verify MySQL connection
+        run: |
+          mysql --version
+          sudo apt-get install -y mysql-client
+          mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uuser -psecret -e "SHOW DATABASES"
 
       -   name: Setup PHP
           uses: shivammathur/setup-php@v2
