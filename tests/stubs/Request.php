@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Validation\Rule;
-use App\Support\Enums\PostStatuses;
+use PulsarLabs\Generators\Tests\TestSupport\Support\PostStatuses;
 use Illuminate\Validation\Rules\Enum;
 use Illuminate\Foundation\Http\FormRequest;
 
