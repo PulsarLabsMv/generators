@@ -1,6 +1,6 @@
 <?php
 
-namespace Abunooh\Generators\Tests\Feature\Commands;
+namespace PulsarLabs\Generators\Tests\Feature\Commands;
 
 use PulsarLabs\Generators\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -33,6 +33,7 @@ class GenerateRequestCommandTest extends TestCase
         $this->assertFileExists($file_path);
 
         $actual_content = $this->getGeneratedFileContents($file_path);
+        dd($actual_content);
         $actual_content = str_replace(["\r", "\n", "\t", " "], '', $actual_content);
         $expected_output = str_replace(["\r", "\n", "\t", " "], '', $expected_output);
 
