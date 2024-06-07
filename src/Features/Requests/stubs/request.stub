@@ -1,0 +1,36 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
+use Illuminate\Foundation\Http\FormRequest;
+{{ Imports }}
+
+class {{ RequestFileName }} extends FormRequest
+{
+
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function rules(): array
+    {
+        ${{ ModelVariable }} = $this->route('{{ ModelRouteParameter }}');
+
+        $rules = [
+            {{ Rules }}
+        ];
+
+        {{ CustomRules }}
+
+        if (${{ ModelVariable }}) {
+            {{ UpdateRules }}
+        } else {
+            {{ StoreRules }}
+        }
+
+        return $rules;
+    }
+}

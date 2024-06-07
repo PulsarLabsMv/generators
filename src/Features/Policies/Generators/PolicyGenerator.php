@@ -3,7 +3,7 @@
 namespace PulsarLabs\Generators\Features\Policies\Generators;
 
 use Illuminate\Console\Command;
-use PulsarLabs\Generators\Features\Models\Updaters\ClassNameUpdater;
+use PulsarLabs\Generators\Support\Updaters\ModelClassNameUpdater;
 use PulsarLabs\Generators\Features\Policies\Updaters\ModelVariableUpdater;
 use PulsarLabs\Generators\Features\Policies\Updaters\ModelPluralLowercaseUpdater;
 
@@ -34,7 +34,7 @@ class PolicyGenerator
 
     private function updateStubContent(false|string $stub, string $table_name): string
     {
-        $stub = (new ClassNameUpdater($stub, $table_name))->handle();
+        $stub = (new ModelClassNameUpdater($stub, $table_name))->handle();
         $stub = (new ModelVariableUpdater($stub, $table_name))->handle();
         $stub = (new ModelPluralLowercaseUpdater($stub, $table_name))->handle();
 

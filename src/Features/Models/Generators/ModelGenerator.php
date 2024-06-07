@@ -4,10 +4,10 @@ namespace PulsarLabs\Generators\Features\Models\Generators;
 
 use Illuminate\Console\Command;
 use PulsarLabs\Generators\Contracts\DatabaseReader;
+use PulsarLabs\Generators\Support\Updaters\ModelClassNameUpdater;
 use PulsarLabs\Generators\Support\Traits\HasGuardedProperties;
 use PulsarLabs\Generators\Support\Traits\HasAttributesProperty;
 use PulsarLabs\Generators\Features\Models\Updaters\ImportsUpdater;
-use PulsarLabs\Generators\Features\Models\Updaters\ClassNameUpdater;
 use PulsarLabs\Generators\Features\Models\Updaters\CastsPropertyUpdater;
 use PulsarLabs\Generators\Features\Models\Updaters\FillablePropertyUpdater;
 use PulsarLabs\Generators\Features\Models\Updaters\HasManyRelationsUpdater;
@@ -62,7 +62,7 @@ class ModelGenerator
     protected function updateStubContent(string $stub, string $table_name, array $columns): string
     {
         $references = $this->databaseReader->getReferencingTableObjects($table_name);
-        $stub = (new ClassNameUpdater($stub, $table_name))->handle();
+        $stub = (new ModelClassNameUpdater($stub, $table_name))->handle();
         $stub = (new FillablePropertyUpdater($stub, $columns, $this->getGuardedProperties($columns)))->handle();
         $stub = (new CastsPropertyUpdater($stub, $columns))->handle();
         $stub = (new BelongsToRelationsUpdater($stub, $columns))->handle();

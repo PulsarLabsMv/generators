@@ -1,10 +1,10 @@
 <?php
 
-namespace PulsarLabs\Generators\Features\Models\Updaters;
+namespace PulsarLabs\Generators\Support\Updaters;
 
 use PulsarLabs\Generators\Contracts\IsStubUpdater;
 
-class ClassNameUpdater implements IsStubUpdater
+class ModelClassNameUpdater implements IsStubUpdater
 {
     public function __construct(
         protected string $stub,
