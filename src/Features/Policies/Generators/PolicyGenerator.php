@@ -14,7 +14,14 @@ class PolicyGenerator
         $stub = $this->getStub();
         $replacedStub = $this->updateStubContent($stub, $table_name);
         $policy_classname = str($table_name)->studly()->singular() . 'Policy';
-        $file_path = app_path('Policies/' . $policy_classname . '.php');
+
+        $path = app_path('/Policies');
+        $file_path = $path . '/' . $policy_classname . '.php';
+
+        // Check if the directory exists
+        if (!is_dir($path)) {
+            mkdir($path, 0755, true);
+        }
 
         file_put_contents($file_path, $replacedStub);
         $command->info('Policy generated successfully');

@@ -14,7 +14,7 @@ class ModelPluralLowercaseUpdater implements IsStubUpdater
 
     public function handle(): string
     {
-        $model_variable_name = str($this->table_name)->lower()->slug('_')->singular();
-        return str_replace('{{ model plural lowercase }}', $model_variable_name, $this->stub);
+        $model_plural_lowercase = str($this->table_name)->lower()->replace('_', ' ')->plural()->toString();
+        return str_replace('{{ model plural lowercase }}', $model_plural_lowercase, $this->stub);
     }
 }
