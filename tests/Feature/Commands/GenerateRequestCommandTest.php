@@ -11,7 +11,7 @@ class GenerateRequestCommandTest extends TestCase
 
     public function setUp(): void
     {
-        $this->markTestIncomplete();
+//        $this->markTestIncomplete();
         parent::setUp();
         $this->deleteFile($this->app->path('Http/Requests/PostRequest.php'));
     }
@@ -34,6 +34,8 @@ class GenerateRequestCommandTest extends TestCase
         $this->assertFileExists($file_path);
 
         $actual_content = $this->getGeneratedFileContents($file_path);
+
+        dd($actual_content);
         $actual_content = str_replace(["\r", "\n", "\t", " "], '', $actual_content);
         $expected_output = str_replace(["\r", "\n", "\t", " "], '', $expected_output);
 
