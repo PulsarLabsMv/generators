@@ -6,16 +6,18 @@ This Laravel package aims to simplify the creation of CRUD (Create, Read, Update
 - [x] Model Generation: Creates Eloquent models with properties like fillable, attributes, casts and relationships.
 - [x] Permissions Generation: Automatically adds permissions to the permissions seeder.
 - [x] Policy Generation: Generates policy classes for authorization.
+- [x] Form Request Generation: Generates form request classes for validation.
 
 ## Ongoing
 Afeef:
-- [ ] Form Request Generation: Generates form request classes for validation.
+
 Ibrahim: 
 - [ ] Controller Generation: Automatically generates resource controllers with standard CRUD methods.
 - [ ] Route Registration: Registers the necessary resource routes in the web.php file.
 - [ ] API Resource Support: Implement the generation of API resource controllers and routes.
       
 ## TODOs:
+- [ ] Nested models: Add support for creating nested models
 - [ ] View Generation: Creates basic Blade templates for index, create, edit, and show pages.
 - [ ] Factory Generation: Automatically generate factories for test data population.
 - [ ] Polymorphic Relationships: Add support for polymorphic relationships in models.
