@@ -33,12 +33,14 @@ class PostRequest extends FormRequest
 
         if ($post = $this->route('post')) {
             $rules['slug'][] = $uniqueSlug->ignore($post->id);
-        } else {
-            $rules['slug'][] = $uniqueSlug;
-            $rules['slug'][] = 'required';
-            $rules['name'][] = 'required';
-            $rules['status'][] = 'required';
+
+            return $rules;
         }
+
+        $rules['slug'][] = $uniqueSlug;
+        $rules['slug'][] = 'required';
+        $rules['name'][] = 'required';
+        $rules['status'][] = 'required';
 
         return $rules;
     }

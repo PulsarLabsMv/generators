@@ -27,9 +27,11 @@ class {{ RequestFileName }} extends FormRequest
 
         if (${{ ModelVariable }}) {
             {{ UpdateRules }}
-        } else {
-            {{ StoreRules }}
+
+            return $rules;
         }
+
+        {{ StoreRules }}
 
         return $rules;
     }
