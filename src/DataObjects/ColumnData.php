@@ -35,6 +35,20 @@ class ColumnData
         return $this->comment;
     }
 
+    public function isEnum(): bool
+    {
+        return str($this->getComment())->contains('enum:');
+    }
+
+    public function getEnum(): ?string
+    {
+        if (! $this->isEnum()) {
+            return null;
+        }
+
+        return str($this->getComment())->after('enum:')->before(']')->trim()->toString();
+    }
+
     public function isForeignKey(): bool
     {
         return $this->is_foreign_key;
@@ -49,6 +63,11 @@ class ColumnData
     public function getReferencedColumnName(): ?string
     {
         return $this->referenced_column_name;
+    }
+
+    public function getReferencedTableName(): ?string
+    {
+        return $this->referenced_table_name;
     }
 
     public function getReferencedModelName(): ?string
@@ -76,6 +95,11 @@ class ColumnData
         }
 
         return str($this->referenced_table_name)->plural()->camel()->toString();
+    }
+
+    public function isNullable(): bool
+    {
+        return $this->nullable;
     }
 
 }

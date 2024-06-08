@@ -34,6 +34,24 @@ enum ColumnTypes: string
         ];
     }
 
+    public function isString(): bool
+    {
+        return in_array($this, [
+            self::String,
+            self::Text,
+        ]);
+    }
+
+    public function isDate(): bool
+    {
+        return in_array($this, [
+            self::Date,
+            self::DateTime,
+            self::Time,
+            self::Timestamp,
+        ]);
+    }
+
     public function getCastType(): ?string
     {
         return self::castTypes()[$this->value] ?? null;
