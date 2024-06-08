@@ -6,6 +6,9 @@ interface DatabaseReader
 {
     public function listColumns(string $table): array;
 
+    public function listIndexes(string $table): array;
+
+    public function getIndexObjects(string $table): array;
 
     public function getColumnObjects(string $table_name): array;
 

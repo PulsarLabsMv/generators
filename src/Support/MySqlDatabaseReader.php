@@ -4,6 +4,7 @@ namespace PulsarLabs\Generators\Support;
 
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Types\DateType;
@@ -20,6 +21,7 @@ use Doctrine\DBAL\Types\DecimalType;
 use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\DBAL\Types\DateTimeType;
 use Illuminate\Support\Facades\Schema;
+use PulsarLabs\Generators\DataObjects\IndexData;
 use PulsarLabs\Generators\DataObjects\ColumnData;
 use PulsarLabs\Generators\Contracts\DatabaseReader;
 use PulsarLabs\Generators\Support\Enums\ColumnTypes;
@@ -107,6 +109,46 @@ class MySqlDatabaseReader implements DatabaseReader
 
         return $columnObjects;
     }
+
+    /**
+     * @throws InvalidTableException
+     */
+    public function listIndexes(string $table): array
+    {
+        if (! Schema::hasTable($table)) {
+            throw new InvalidTableException($table);
+        }
+
+        try {
+            $schemaManager = $this->connection->createSchemaManager();
+        } catch (Exception $e) {
+            throw new InvalidTableException($table);
+        }
+
+        try {
+            return $schemaManager->listTableIndexes($table);
+        } catch (Exception $e) {
+            throw new InvalidTableException($table);
+        }
+    }
+
+    public function getIndexObjects(string $table): array
+    {
+        try {
+            $indexes = $this->listIndexes($table);
+        } catch (InvalidTableException $e) {
+            return [];
+        }
+
+        $indexObjects = [];
+
+        foreach ($indexes as $index) {
+            $indexObjects[] = IndexData::fromDoctrineIndex($index);
+        }
+
+        return $indexObjects;
+    }
+
 
     protected function getForeignKeys(string $table): array
     {
