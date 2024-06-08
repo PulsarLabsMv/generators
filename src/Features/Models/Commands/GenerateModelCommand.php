@@ -7,7 +7,6 @@ use Illuminate\Pipeline\Pipeline;
 use PulsarLabs\Generators\DataObjects\CommandData;
 use PulsarLabs\Generators\Support\Traits\HasGuardedProperties;
 use PulsarLabs\Generators\Features\Models\Processors\ImportsProcessor;
-use PulsarLabs\Generators\Features\Models\Generators\ModelGenerator;
 use PulsarLabs\Generators\Support\Processors\ModelClassNameProcessor;
 use PulsarLabs\Generators\Features\Models\Processors\CastsPropertyProcessor;
 use PulsarLabs\Generators\Features\Models\Processors\FillablePropertyProcessor;

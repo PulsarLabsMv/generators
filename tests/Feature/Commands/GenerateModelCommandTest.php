@@ -34,7 +34,6 @@ class GenerateModelCommandTest extends TestCase
 
         $actual_content = $this->getGeneratedFileContents($model_path);
 
-        dd($actual_content);
         $actual_content = str_replace(["\r", "\n", "\t", " "], '', $actual_content);
         $expected_output = str_replace(["\r", "\n", "\t", " "], '', $expected_output);
 
