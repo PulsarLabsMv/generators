@@ -10,6 +10,7 @@ use PulsarLabs\Generators\Features\Requests\Processors\RulesProcessor;
 use PulsarLabs\Generators\Support\Processors\RequestClassNameProcessor;
 use PulsarLabs\Generators\Features\Requests\Generators\RequestGenerator;
 use PulsarLabs\Generators\Support\Processors\ModelRouteParameterProcessor;
+use PulsarLabs\Generators\Features\Requests\Processors\StoreRulesProcessor;
 use PulsarLabs\Generators\Features\Requests\Processors\CustomRulesProcessor;
 use PulsarLabs\Generators\Features\Requests\Processors\UpdateRulesProcessor;
 
@@ -26,6 +27,7 @@ class GenerateRequestCommand extends Command
         RulesProcessor::class,
         CustomRulesProcessor::class,
         UpdateRulesProcessor::class,
+        StoreRulesProcessor::class,
     ];
 
     public function handle(): void

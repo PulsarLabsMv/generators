@@ -54,6 +54,11 @@ class ColumnData
         return $this->is_foreign_key;
     }
 
+    public function autoIncrement(): bool
+    {
+        return $this->autoIncrement;
+    }
+
     public function getStatusClassFromComment(): false|string
     {
         $comment_parts = explode("\\", $this->getComment());
