@@ -6,11 +6,14 @@ use Illuminate\Console\Command;
 use Illuminate\Pipeline\Pipeline;
 use PulsarLabs\Generators\DataObjects\CommandData;
 use PulsarLabs\Generators\Support\Traits\HasGuardedProperties;
+use PulsarLabs\Generators\Features\Models\Processors\ImportsProcessor;
 use PulsarLabs\Generators\Features\Models\Generators\ModelGenerator;
 use PulsarLabs\Generators\Support\Processors\ModelClassNameProcessor;
 use PulsarLabs\Generators\Features\Models\Processors\CastsPropertyProcessor;
 use PulsarLabs\Generators\Features\Models\Processors\FillablePropertyProcessor;
+use PulsarLabs\Generators\Features\Models\Processors\HasManyRelationsProcessor;
 use PulsarLabs\Generators\Features\Models\Processors\BelongsToRelationsProcessor;
+use PulsarLabs\Generators\Features\Models\Processors\BelongsToManyRelationsProcessor;
 
 class GenerateModelCommand extends Command
 {
@@ -25,6 +28,9 @@ class GenerateModelCommand extends Command
         FillablePropertyProcessor::class,
         CastsPropertyProcessor::class,
         BelongsToRelationsProcessor::class,
+        HasManyRelationsProcessor::class,
+        BelongsToManyRelationsProcessor::class,
+        ImportsProcessor::class,
     ];
 
     public function handle(): void

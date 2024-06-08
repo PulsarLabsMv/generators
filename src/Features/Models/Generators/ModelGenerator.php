@@ -65,10 +65,10 @@ class ModelGenerator
 //        $stub = (new ModelClassNameUpdater($stub, $table_name))->handle();
 //        $stub = (new FillablePropertyUpdater($stub, $columns, $this->getGuardedProperties($columns)))->handle();
 //        $stub = (new CastsPropertyUpdater($stub, $columns))->handle();
-        $stub = (new BelongsToRelationsUpdater($stub, $columns))->handle();
-        $stub = (new HasManyRelationsUpdater($stub, $references))->handle();
-        $stub = (new BelongsToManyRelationsUpdater($stub, $references, $this->databaseReader))->handle();
-        $stub = (new ImportsUpdater($stub, $columns, $references))->handle();
+//        $stub = (new BelongsToRelationsUpdater($stub, $columns))->handle();
+//        $stub = (new HasManyRelationsUpdater($stub, $references))->handle();
+//        $stub = (new BelongsToManyRelationsUpdater($stub, $references, $this->databaseReader))->handle();
+//        $stub = (new ImportsUpdater($stub, $columns, $references))->handle();
         $stub = (new RemovePlaceholdersUpdater($stub, $this->placeholders))->handle();
         return $stub;
     }

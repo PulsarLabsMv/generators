@@ -33,6 +33,11 @@ class CommandData
         return $this->database_reader->getColumnObjects($this->table_name);
     }
 
+    public function getReferencingTableObjects(): array
+    {
+        return $this->database_reader->getReferencingTableObjects($this->table_name);
+    }
+
     public function getGuardedProperties(): array
     {
         return $this->guarded_properties;

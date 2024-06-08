@@ -6,12 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 {{ imports }}
 
-class {{ ModelClassName }} extends Model {{ interfaces }}
+class {{ ModelClassName }} extends Model
 {
     use HasFactory;
-    {{ traits }}
 
-    {{ attributes }}{{ Fillable }}{{ casts }}
+    {{ Fillable }}{{ casts }}
     {{ belongsToRelations }}{{ hasManyRelations }}{{ manyToManyRelations }}
-    {{ mutators }}{{ methods }}
 }
