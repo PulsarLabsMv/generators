@@ -5,20 +5,28 @@
 ```php
 str($this->table_name)->studly()->singular()->toString();
 ```
-**Updater:** `PulsarLabs\Generators\Support\Updaters\ModelClassNameUpdater`
+**Processor:** `PulsarLabs\Generators\Support\Processors\ModelClassNameProcessor`
 
-**Usage:**
-```php
-$stub = (new ModelClassNameUpdater($stub, $table_name))->handle();
-```
+**Example:**
+Table name: `collection_points`
+Result: `CollectionPoint`
 
 ### {{ ModelVariable }}
 ```php
 str($table_name)->singular()->slug('_')->toString();
 ```
-**Updater:** `PulsarLabs\Generators\Support\Updaters\ModelVariableUpdater`
+**Processor:** `PulsarLabs\Generators\Support\Updaters\ModelVariableProcessor`
 
-**Usage:**
+**Example:**
+Table name: `collection_points`
+Result: `collection_point`
+
+### {{ ModelPluralLowercaseSpaces }}
 ```php
-$stub = (new ModelVariableUpdater($stub, $table_name))->handle();
+str($command_data->table_name)->lower()->replace('_', ' ')->plural()->toString();
 ```
+**Processor:** `PulsarLabs\Generators\Support\Updaters\ModelPluralLowercaseSpacesProcessor`
+
+**Example:**
+Table name: `collection_points`
+Result: `collection points`

@@ -10,26 +10,26 @@ class {{ ModelClassName }}Policy
 
     public function viewAny(User $user): bool
     {
-        return $user->can('view {{ model plural lowercase }}');
+        return $user->can('view {{ ModelPluralLowercaseSpaces }}');
     }
 
     public function view(User $user, {{ ModelClassName }} ${{ ModelVariable }}): bool
     {
-        return $user->can('view {{ model plural lowercase }}');
+        return $user->can('view {{ ModelPluralLowercaseSpaces }}');
     }
 
     public function create(User $user): bool
     {
-        return $user->can('edit {{ model plural lowercase }}');
+        return $user->can('edit {{ ModelPluralLowercaseSpaces }}');
     }
 
     public function update(User $user, {{ ModelClassName }} ${{ ModelVariable }}): bool
     {
-        return $user->can('edit {{ model plural lowercase }}');
+        return $user->can('edit {{ ModelPluralLowercaseSpaces }}');
     }
 
     public function delete(User $user, {{ ModelClassName }} ${{ ModelVariable }}): bool
     {
-        return $user->can('delete {{ model plural lowercase }}');
+        return $user->can('delete {{ ModelPluralLowercaseSpaces }}');
     }
 }
