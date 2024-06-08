@@ -3,8 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 use PulsarLabs\Generators\Tests\TestSupport\Support\PostStatuses;
+use Illuminate\Validation\Rule;
 
 class PostRequest extends FormRequest
 {
