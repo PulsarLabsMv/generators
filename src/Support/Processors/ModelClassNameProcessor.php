@@ -1,11 +1,11 @@
 <?php
 
-namespace PulsarLabs\Generators\Features\Policies\Processors;
+namespace PulsarLabs\Generators\Support\Processors;
 
 use Closure;
 use PulsarLabs\Generators\DataObjects\CommandData;
 
-class ModuleClassNameProcessor
+class ModelClassNameProcessor
 {
     public function handle(CommandData $command_data, Closure $next)
     {

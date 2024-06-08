@@ -62,9 +62,9 @@ class ModelGenerator
     protected function updateStubContent(string $stub, string $table_name, array $columns): string
     {
         $references = $this->databaseReader->getReferencingTableObjects($table_name);
-        $stub = (new ModelClassNameUpdater($stub, $table_name))->handle();
-        $stub = (new FillablePropertyUpdater($stub, $columns, $this->getGuardedProperties($columns)))->handle();
-        $stub = (new CastsPropertyUpdater($stub, $columns))->handle();
+//        $stub = (new ModelClassNameUpdater($stub, $table_name))->handle();
+//        $stub = (new FillablePropertyUpdater($stub, $columns, $this->getGuardedProperties($columns)))->handle();
+//        $stub = (new CastsPropertyUpdater($stub, $columns))->handle();
         $stub = (new BelongsToRelationsUpdater($stub, $columns))->handle();
         $stub = (new HasManyRelationsUpdater($stub, $references))->handle();
         $stub = (new BelongsToManyRelationsUpdater($stub, $references, $this->databaseReader))->handle();

@@ -1,6 +1,6 @@
 <?php
 
-namespace PulsarLabs\Generators\Features\Policies\Processors;
+namespace PulsarLabs\Generators\Support\Processors;
 
 use Closure;
 use PulsarLabs\Generators\DataObjects\CommandData;

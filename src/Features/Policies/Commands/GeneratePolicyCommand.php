@@ -5,11 +5,9 @@ namespace PulsarLabs\Generators\Features\Policies\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Pipeline\Pipeline;
 use PulsarLabs\Generators\DataObjects\CommandData;
-use PulsarLabs\Generators\Features\Policies\Generators\PolicyGenerator;
-use PulsarLabs\Generators\Features\Permissions\Generators\PermissionGenerator;
-use PulsarLabs\Generators\Features\Policies\Processors\ModelVariableProcessor;
-use PulsarLabs\Generators\Features\Policies\Processors\ModuleClassNameProcessor;
-use PulsarLabs\Generators\Features\Policies\Processors\ModelPluralLowercaseSpacesProcessor;
+use PulsarLabs\Generators\Support\Processors\ModelVariableProcessor;
+use PulsarLabs\Generators\Support\Processors\ModelClassNameProcessor;
+use PulsarLabs\Generators\Support\Processors\ModelPluralLowercaseSpacesProcessor;
 
 class GeneratePolicyCommand extends Command
 {
@@ -18,7 +16,7 @@ class GeneratePolicyCommand extends Command
     protected $description = 'Generates policies for the model.';
 
     protected array $processors = [
-        ModuleClassNameProcessor::class,
+        ModelClassNameProcessor::class,
         ModelVariableProcessor::class,
         ModelPluralLowercaseSpacesProcessor::class,
     ];
