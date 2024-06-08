@@ -100,7 +100,7 @@ class RulesProcessor
 
     private function getBelongsToManyRules(ColumnData $referenced_table_column): string
     {
-        $rules = "\t\t\t'{$referenced_table_column->getReferencedTableName()}' => ['nullable', 'array'],\n";
+        $rules = "\t\t\t'{$referenced_table_column->getReferencedTableName()}' => ['nullable', 'array',],\n";
         $rules .= "\t\t\t'{$referenced_table_column->getReferencedTableName()}.*' => [";
         $rules .= "'exists:{$referenced_table_column->getReferencedTableName()},{$referenced_table_column->getReferencedColumnName()}', ";
         $rules .= "],\n";
