@@ -9,7 +9,8 @@ class ReferencingTableData
         public string $referencing_column_name,
         public string $constraint_name,
         public string $local_key,
-    ) {
+    )
+    {
     }
 
     public function getMethodName(): string

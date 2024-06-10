@@ -41,9 +41,9 @@ class GenerateModelCommand extends Command
         $databaseReader = new $databaseReaderClass();
 
         $command_data = CommandData::fromArray([
-            'stub_contents'   => $stub,
-            'table_name'      => $table_name,
-            'database_reader' => $databaseReader,
+            'stub_contents'      => $stub,
+            'table_name'         => $table_name,
+            'database_reader'    => $databaseReader,
             'guarded_properties' => $this->getGuardedProperties($databaseReader->getColumnObjects($table_name)),
         ]);
 

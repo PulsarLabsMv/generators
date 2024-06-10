@@ -6,15 +6,13 @@ use PulsarLabs\Generators\Contracts\DatabaseReader;
 
 class CommandData
 {
-
     public function __construct(
-        public string $table_name,
-        public string $stub_contents,
-        public ?array $arguments = [],
+        public string          $table_name,
+        public string          $stub_contents,
+        public ?array          $arguments = [],
         public ?DatabaseReader $database_reader = null,
-        public array $guarded_properties = [],
-    )
-    {
+        public array           $guarded_properties = [],
+    ) {
     }
 
     public static function fromArray(array $data): CommandData

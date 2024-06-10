@@ -9,5 +9,6 @@ return [
         \PulsarLabs\Generators\Features\Permissions\Commands\GeneratePermissionCommand::class,
         \PulsarLabs\Generators\Features\Policies\Commands\GeneratePolicyCommand::class,
         \PulsarLabs\Generators\Features\Requests\Commands\GenerateRequestCommand::class,
+        \PulsarLabs\Generators\Features\Controllers\Commands\GenerateControllerCommand::class
     ]
 ];

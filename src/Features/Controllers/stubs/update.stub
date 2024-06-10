@@ -1,0 +1,10 @@
+    public function update({{ ModelClassName }}Request $request, {{ ModelClassName }} ${{ ModelVariable }})
+    {
+        $this->authorize('update', ${{ ModelVariable }});
+        ${{ ModelVariable }}->fill($request->validated());
+        {{ ModelColumnSet }}
+        {{ ModelAssociateRelations }}
+        ${{ ModelVariable }}->save();
+          flash()->success(__('The {{ ModelSingularLowercaseSpaces }} was successfully updated.'));
+        return to_route('{{ ModelResourceName }}.edit', compact('{{ ModelVariable }}'));
+    }

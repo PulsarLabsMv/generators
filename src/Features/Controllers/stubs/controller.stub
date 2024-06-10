@@ -1,0 +1,85 @@
+<?php
+
+namespace App\Http\Controllers{{ NamespaceClass }};
+
+use Illuminate\Http\Request;
+use App\Models\{{ ModelClassName }};
+use App\Http\Requests\{{ ModelClassName }}Request;
+{{ ControllerImport }}
+
+class {{ ModelClassName }}Controller extends Controller
+{
+    public function index(Request $request)
+    {
+        $this->authorize('viewAny', {{ ModelClassName }}::class);
+        $page = $request->input('page', 1);
+        $per_page = (int) $request->input('per_page', config('defaults.per_page'));
+        $order_by = $request->input('order_by', 'id');
+        $order_direction = $request->input('order_direction');
+        if (!in_array($order_direction, ['asc', 'desc'])) {
+            $order_direction = 'asc';
+        }
+
+        if (!in_array($order_by, {{ ModelClassName }}::allowedSorts())) {
+            $order_by = 'id';
+        }
+
+        ${{ ModelPluralVariable }} = {{ ModelClassName }}::query()
+                            ->orderBy($order_by, $order_direction);
+
+        if ($search = $request->input('search')) {
+            ${{ ModelPluralVariable }}->search($search);
+        }
+
+        ${{ ModelPluralVariable }} = ${{ ModelPluralVariable }}
+                ->paginate($per_page)
+                ->appends($request->except('page'));
+
+
+        return view('{{ NamespaceResourceName }}{{ ModelResourceName }}.index', compact('{{ ModelPluralVariable }}'));
+
+    }
+
+      public function show({{ ModelClassName }} ${{ ModelVariableName }})
+      {
+          $this->authorize('view',${{ ModelVariableName }});
+          return view('{{ NamespaceResourceName }}{{ ModelResourceName }}.show', [
+              '{{ ModelVariableName }}' => ${{ ModelVariableName }},
+          ]);
+      }
+
+    public function create(Request $request)
+    {
+        $this->authorize('create', {{ ModelClassName }}::class);
+        return view('{{ NamespaceResourceName }}{{ ModelResourceName }}.create', [
+            '{{ ModelVariableName }}' => new {{ ModelClassName }}(),
+        ]);
+    }
+
+    public function edit({{ ModelClassName }} ${{ ModelVariableName }})
+    {
+         $this->authorize('edit', ${{ ModelVariableName }});
+         return view('{{ NamespaceResourceName }}{{ ModelResourceName }}.edit', compact('{{ ModelVariableName }}'));
+    }
+
+    {{ store_method }}
+
+    {{ update_method }}
+
+    public function destroy(Request $request, {{ ModelClassName }} ${{ ModelVariableName }})
+    {
+      $this->authorize('delete', ${{ ModelVariableName }});
+            if (!${{ ModelVariableName }}->delete()) {
+                if ($request->expectsJson()) {
+                    return response()->json(false, 500);
+                }
+                abort(500);
+            }
+
+            if ($request->expectsJson()) {
+                return response()->json(true);
+            }
+
+            return to_route('{{ NamespaceResourceName }}{{ ModelResourceName }}.index');
+    }
+}

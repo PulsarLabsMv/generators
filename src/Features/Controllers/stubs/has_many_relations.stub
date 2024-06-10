@@ -1,0 +1,1 @@
+{{ ModelVariable }}->{{ Relationship }}()->save($request->validated({{ ColumnName }}));
