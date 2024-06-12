@@ -1,85 +1,60 @@
 <?php
 
-namespace App\Http\Controllers{{ NamespaceClass }};
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Models\{{ ModelClassName }};
-use App\Http\Requests\{{ ModelClassName }}Request;
-{{ ControllerImport }}
+use App\Http\Requests\{{ RequestFileName }};
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class {{ ModelClassName }}Controller extends Controller
+class {{ ModelClassName }}Controller
 {
+    use AuthorizesRequests;
+
+    public function __construct()
+    {
+        $this->authorizeResource({{ ModelClassName }}::class);
+    }
+
+    /**
+    * Display a listing of the resource.
+    */
     public function index(Request $request)
     {
-        $this->authorize('viewAny', {{ ModelClassName }}::class);
-        $page = $request->input('page', 1);
-        $per_page = (int) $request->input('per_page', config('defaults.per_page'));
-        $order_by = $request->input('order_by', 'id');
-        $order_direction = $request->input('order_direction');
-        if (!in_array($order_direction, ['asc', 'desc'])) {
-            $order_direction = 'asc';
-        }
+        $order_by = $request->input('order_by', 'created_at');
+        $order = $request->input('order', 'desc');
+        $per_page = $request->input('per_page', config('defaults.per_page'));
 
-        if (!in_array($order_by, {{ ModelClassName }}::allowedSorts())) {
-            $order_by = 'id';
-        }
-
-        ${{ ModelPluralVariable }} = {{ ModelClassName }}::query()
-                            ->orderBy($order_by, $order_direction);
+        ${{ ModelPluralVariable }} = {{ ModelClassName }}::orderBy($order_by, $order);
 
         if ($search = $request->input('search')) {
             ${{ ModelPluralVariable }}->search($search);
         }
 
-        ${{ ModelPluralVariable }} = ${{ ModelPluralVariable }}
-                ->paginate($per_page)
-                ->appends($request->except('page'));
+        {{ belongsToQueries }}
 
+        {{ hasManyQueries }}
 
-        return view('{{ NamespaceResourceName }}{{ ModelResourceName }}.index', compact('{{ ModelPluralVariable }}'));
-
+        return view('admin.{{ ModelPluralVariable }}.index', compact('{{ ModelPluralVariable }}'));
     }
-
-      public function show({{ ModelClassName }} ${{ ModelVariableName }})
-      {
-          $this->authorize('view',${{ ModelVariableName }});
-          return view('{{ NamespaceResourceName }}{{ ModelResourceName }}.show', [
-              '{{ ModelVariableName }}' => ${{ ModelVariableName }},
-          ]);
-      }
 
     public function create(Request $request)
     {
-        $this->authorize('create', {{ ModelClassName }}::class);
-        return view('{{ NamespaceResourceName }}{{ ModelResourceName }}.create', [
-            '{{ ModelVariableName }}' => new {{ ModelClassName }}(),
+        return view('admin.{{ ModelPluralVariable }}.create', [
+            '{{ ModelRouteParameter }}' => new {{ ModelClassName }}(),
         ]);
     }
 
-    public function edit({{ ModelClassName }} ${{ ModelVariableName }})
+    public function store({{ RequestFileName }} $request)
     {
-         $this->authorize('edit', ${{ ModelVariableName }});
-         return view('{{ NamespaceResourceName }}{{ ModelResourceName }}.edit', compact('{{ ModelVariableName }}'));
-    }
+        ${{ ModelVariable }} = new {{ ModelClassName }}($request->validated());
+        {{ belongsToAssociations }}
+        ${{ ModelVariable }}->save();
 
-    {{ store_method }}
+        {{ pivotSyncs }}
 
-    {{ update_method }}
+        $this->flashSuccessMessage();
 
-    public function destroy(Request $request, {{ ModelClassName }} ${{ ModelVariableName }})
-    {
-      $this->authorize('delete', ${{ ModelVariableName }});
-            if (!${{ ModelVariableName }}->delete()) {
-                if ($request->expectsJson()) {
-                    return response()->json(false, 500);
-                }
-                abort(500);
-            }
-
-            if ($request->expectsJson()) {
-                return response()->json(true);
-            }
-
-            return to_route('{{ NamespaceResourceName }}{{ ModelResourceName }}.index');
+        return to_route('admin.{{ ModelPluralVariable }}.edit', ${{ ModelVariable }});
     }
 }

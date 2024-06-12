@@ -1,3 +1,0 @@
-if (${{ column_name }} = $request->validated('{{ column_name }}')) {
-    ${{ model_variable }}->{{ relationship }}()->associate(${{ column_name }});
-}

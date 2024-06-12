@@ -1,2 +1,0 @@
-{{ model_variable }}->{{ column_name }} = $request->validated('{{ column_name }}');
-

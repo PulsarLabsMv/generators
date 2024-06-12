@@ -1,0 +1,3 @@
+if (${{ model }} = $request->input('{{ model_key }}')) {
+    ${{ ModelPluralVariable }}->whereHas{{ query_relationship }}(${{ query_model }});
+}
