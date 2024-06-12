@@ -57,4 +57,59 @@ class {{ ModelClassName }}Controller
 
         return to_route('admin.{{ ModelPluralVariable }}.edit', ${{ ModelVariable }});
     }
+
+    public function show({{ ModelClassName }} ${{ ModelVariable }})
+    {
+        return view('admin.{{ ModelPluralVariable }}.show', compact('{{ ModelVariable }}'));
+    }
+
+    public function edit({{ ModelClassName }} ${{ ModelVariable }})
+    {
+        return view('admin.{{ ModelPluralVariable }}.edit', compact('{{ ModelVariable }}'));
+    }
+
+    public function update({{ RequestFileName }} $request, {{ ModelClassName }} ${{ ModelVariable }})
+    {
+        ${{ ModelVariable }}->fill($request->validated());
+
+        {{ belongsToOptionalAssociations }}
+
+        ${{ ModelVariable }}->save();
+
+        {{ pivotHardSyncs }}
+
+        $this->flashSuccessMessage();
+
+        return to_route('admin.{{ ModelPluralVariable }}.edit', ${{ ModelVariable }});
+    }
+
+        public function destroy({{ ModelClassName }} ${{ ModelVariable }}, Request $request)
+        {
+            if (! $post->delete()) {
+                if ($request->expectsJson()) {
+                    return response()->json(false, 500);
+                }
+
+                abort(500);
+            }
+
+            if ($request->expectsJson()) {
+                return response()->json(true);
+            }
+
+            return to_route('admin.{{ ModelPluralVariable }}.index');
+        }
+
+        public function bulk(Request $request)
+        {
+            $this->authorize('viewAny', {{ ModelClassName }}::class);
+
+            $request->validate([
+                'action' => ['required', 'string', 'in:delete'],
+                '{{ ModelPluralVariable }}' => ['required','array'],
+                '{{ ModelPluralVariable }}.*' => [Rule::exists('{{ TableName }}', 'id')]
+            ]);
+
+            $action = $request->input('action');
+        }
 }
