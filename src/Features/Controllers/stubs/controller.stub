@@ -76,7 +76,7 @@ class {{ ModelClassName }}Controller
 
         ${{ ModelVariable }}->save();
 
-        {{ pivotHardSyncs }}
+        {{ pivotSyncs }}
 
         $this->flashSuccessMessage();
 
@@ -111,5 +111,17 @@ class {{ ModelClassName }}Controller
             ]);
 
             $action = $request->input('action');
+            $ids = $request->input('{{ ModelPluralVariable }}');
+
+            switch ($action) {
+                case 'delete':
+                    $this->authorize('delete', ${{ ModelVariable }});
+                    {{ ModelClassName }}::whereIn('id', $ids)
+                        ->get()
+                        ->each(function ({{ ModelClassName }} ${{ ModelVariable }}) {
+                                ${{ ModelVariable }}->delete();
+                                });
+                        break;
+            }
         }
 }

@@ -60,7 +60,7 @@ class PostsController
         $post->category()->associate($request->input('category'));
         $post->save();
 
-        if ($tags = $request->input('tags')) {
+        if ($tags = $request->input('tags', [])) {
             $post->tags()->sync($tags);
         }
 
@@ -88,7 +88,9 @@ class PostsController
 
         $post->save();
 
-        $post->tags()->sync($request->input('tags', []));
+        if ($tags = $request->input('tags', [])) {
+            $post->tags()->sync($tags);
+        }
 
         $this->flashSuccessMessage();
         return to_route('admin.posts.edit', $post);
