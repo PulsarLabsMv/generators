@@ -28,7 +28,7 @@ class {{ ParentModelClassName }}{{ ModelClassName }}Controller
         $order = $this->getOrder($request, 'created_at', $order_by);
         $per_page = $this->getPerPage($request);
 
-        ${{ ModelPluralVariable }} = ${{ ParentModelVariable }}->{{ Relationships }}()->orderBy($order_by, $order);
+        ${{ ModelPluralVariable }} = ${{ ParentModelVariable }}->{{ ParentRelationship }}()->orderBy($order_by, $order);
 
         $search = null;
         if ($search = $request->input('search')) {
@@ -40,11 +40,31 @@ class {{ ParentModelClassName }}{{ ModelClassName }}Controller
             ${{ ModelPluralVariable }}->dateBetween($date_field, $request->input('date_from'));
         }
 
-        ${{ ModelPluralVariable }} = ${{ ModelPluralVariable }}->with('{{ ParentModelVariable }}')
+        ${{ ModelPluralVariable }} = ${{ ModelPluralVariable }}
+                       ->with({{ IncludedRelationships }})
                        ->paginate($per_page)
                        ->append($request->except('{{ ModelVariable }}'));
 
-        return view('admin.{{ ParentModelRoutePluralName }}.{{ ModelRoutePluralName }}.index', compact('{{ ParentModelRouteParameter }}'));
+        return view('admin.{{ ParentRoutePluralResourceName }}.{{ ModelRoutePluralResourceName }}.index', compact('{{ ParentModelVariable }}'));
+    }
+
+    public function create(Request $request, {{ ParentModelClassName }} ${{ ParentModelVariable }})
+    {
+        $this->authorize('create', [{{ ParentModelClassName }}::class, ${{ ParentModelVariable }}]);
+        return view('admin.{{ ParentRoutePluralResourceName }}.{{ ModelRoutePluralResourceName }}.create', compact('${{ ParentModelVariable }}'));
+    }
+
+    public function store({{ ParentModelClassName }} ${{ ParentModelVariable }}, {{ ParentModelClassName }}{{ ModelClassName }}Request $request)
+    {
+        $this->authorize('create', [{{ ModelClassName }}::class, ${{ ParentModelVariable }}]);
+        ${{ ModelVariable }} = new {{ ModelClassName }}($request->validated());
+        {{ belongsToAssociations }}
+        ${{ ModelVariable }}->save();
+        {{ pivotSyncs }}
+
+        $this->flashSuccessMessage();
+
+        return to_route('admin.{{ ParentRoutePluralResourceName }}.{{ ModelRoutePluralResourceName }}.edit', compact('${{ ParentModelVariable }}', '${{ ModelVariable }}'));
     }
 
 }

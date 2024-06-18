@@ -24,7 +24,10 @@ class GenerateControllerCommandTest extends TestCase
         parent::tearDown();
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group generate.controllers.primary
+     */
     public function it_can_generate_controller_file(): void
     {
         $controller_path = $this->app->path('Http/Controllers/Admin/PostsController.php');
@@ -36,6 +39,30 @@ class GenerateControllerCommandTest extends TestCase
         $this->assertFileExists($controller_path);
 
         $actual_content = $this->getGeneratedFileContents($controller_path);
+
+        $actual_content = str_replace(["\r", "\n", "\t", " "], '', $actual_content);
+        $expected_output = str_replace(["\r", "\n", "\t", " "], '', $expected_output);
+
+        $this->assertEquals($expected_output, $actual_content);
+    }
+
+    /**
+     * @test
+     * @group generate.controllers.nested
+     */
+    public function it_can_generate_nested_controller_file()
+    {
+        $controller_path = $this->app->path('Http/Controllers/Admin/CategoryPostsController.php');
+        $expected_output = $this->getTestStubContents('Controller.php');
+
+        $this->artisan('generate:controller', ['table' => 'posts', '--parent' => 'category'])
+             ->assertSuccessful();
+
+        $this->assertFileExists($controller_path);
+
+        $actual_content = $this->getGeneratedFileContents($controller_path);
+
+        dd($actual_content);
 
         $actual_content = str_replace(["\r", "\n", "\t", " "], '', $actual_content);
         $expected_output = str_replace(["\r", "\n", "\t", " "], '', $expected_output);

@@ -15,6 +15,7 @@ use PulsarLabs\Generators\Support\Processors\ModelRouteParameterProcessor;
 use PulsarLabs\Generators\Support\Processors\ModelClassPluralNameProcessor;
 use PulsarLabs\Generators\Features\Controllers\Processors\PivotSyncProcessor;
 use PulsarLabs\Generators\Support\Processors\ModelPluralLowercaseSpacesProcessor;
+use PulsarLabs\Generators\Support\Processors\ModelRoutePluralResourceNameProcessor;
 use PulsarLabs\Generators\Features\Controllers\Processors\IncludedRelationshipsProcessor;
 use PulsarLabs\Generators\Features\Controllers\Processors\QueryWhereHasManyRelationsProcessor;
 use PulsarLabs\Generators\Features\Controllers\Processors\BelongsToRelationAssocationProcessor;
@@ -42,6 +43,7 @@ class GenerateControllerCommand extends Command
         ModelVariableProcessor::class,
         ModelRouteParameterProcessor::class,
         TableNameProcessor::class,
+        ModelRoutePluralResourceNameProcessor::class
     ];
 
     public function handle(): void

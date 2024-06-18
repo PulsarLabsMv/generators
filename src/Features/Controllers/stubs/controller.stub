@@ -40,12 +40,12 @@ class {{ ModelClassPluralName }}Controller
             ->paginate($per_page)
             ->appends($request->except('page'));
 
-        return view('admin.{{ ModelPluralVariable }}.index', compact('{{ ModelPluralVariable }}'));
+        return view('admin.{{ ModelRoutePluralResourceName }}.index', compact('{{ ModelPluralVariable }}'));
     }
 
     public function create(Request $request)
     {
-        return view('admin.{{ ModelPluralVariable }}.create', [
+        return view('admin.{{ ModelRoutePluralResourceName }}.create', [
             '{{ ModelRouteParameter }}' => new {{ ModelClassName }}(),
         ]);
     }
@@ -60,17 +60,17 @@ class {{ ModelClassPluralName }}Controller
 
         $this->flashSuccessMessage();
 
-        return to_route('admin.{{ ModelPluralVariable }}.edit', ${{ ModelVariable }});
+        return to_route('admin.{{ ModelRoutePluralResourceName }}.edit', ${{ ModelVariable }});
     }
 
     public function show({{ ModelClassName }} ${{ ModelVariable }})
     {
-        return view('admin.{{ ModelPluralVariable }}.show', compact('{{ ModelVariable }}'));
+        return view('admin.{{ ModelRoutePluralResourceName }}.show', compact('{{ ModelVariable }}'));
     }
 
     public function edit({{ ModelClassName }} ${{ ModelVariable }})
     {
-        return view('admin.{{ ModelPluralVariable }}.edit', compact('{{ ModelVariable }}'));
+        return view('admin.{{ ModelRoutePluralResourceName }}.edit', compact('{{ ModelVariable }}'));
     }
 
     public function update({{ RequestFileName }} $request, {{ ModelClassName }} ${{ ModelVariable }})
@@ -85,7 +85,7 @@ class {{ ModelClassPluralName }}Controller
 
         $this->flashSuccessMessage();
 
-        return to_route('admin.{{ ModelPluralVariable }}.edit', ${{ ModelVariable }});
+        return to_route('admin.{{ ModelRoutePluralResourceName }}.edit', ${{ ModelVariable }});
     }
 
         public function destroy({{ ModelClassName }} ${{ ModelVariable }}, Request $request)
@@ -102,7 +102,7 @@ class {{ ModelClassPluralName }}Controller
                 return response()->json(true);
             }
 
-            return to_route('admin.{{ ModelPluralVariable }}.index');
+            return to_route('admin.{{ ModelRoutePluralResourceName }}.index');
         }
 
         public function bulk(Request $request)
@@ -130,6 +130,6 @@ class {{ ModelClassPluralName }}Controller
             }
 
             $this->flashSuccessMessage();
-            return to_route('admin.{{ ModelPluralVariable }}.index');
+            return to_route('admin.{{ ModelRoutePluralResourceName }}.index');
         }
 }

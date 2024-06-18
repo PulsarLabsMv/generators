@@ -12,7 +12,8 @@ class CommandData
         public ?array          $arguments = [],
         public ?DatabaseReader $database_reader = null,
         public array           $guarded_properties = [],
-    ) {
+    )
+    {
     }
 
     public static function fromArray(array $data): CommandData

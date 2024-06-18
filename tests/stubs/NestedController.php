@@ -45,7 +45,7 @@ class CategoryPostsController extends Controller
                        ->paginate($per_page)
                        ->append($request->except('page'));
 
-        return view('admin.categories.posts.index', compact('category'));
+        return view('admin.categories.posts.index', compact('posts'));
     }
 
     public function create(Request $request, Category $category)
