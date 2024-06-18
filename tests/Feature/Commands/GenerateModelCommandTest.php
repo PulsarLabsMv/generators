@@ -5,6 +5,9 @@ namespace PulsarLabs\Generators\Tests\Feature\Commands;
 use PulsarLabs\Generators\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
+/**
+ * @group generate.model
+ */
 class GenerateModelCommandTest extends TestCase
 {
     use RefreshDatabase;
@@ -29,7 +32,6 @@ class GenerateModelCommandTest extends TestCase
 
         $this->artisan('generate:model', ['table' => 'categories'])
             ->assertSuccessful();
-
         $this->assertFileExists($model_path);
 
         $actual_content = $this->getGeneratedFileContents($model_path);

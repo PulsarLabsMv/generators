@@ -12,6 +12,7 @@ class GenerateNestedControllerCommand extends Command
 
     public function handle(): void
     {
-
     }
+
+
 }

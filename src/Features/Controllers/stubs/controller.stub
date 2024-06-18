@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Models\{{ ModelClassName }};
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Http\Requests\{{ RequestFileName }};
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class {{ ModelClassName }}Controller
+class {{ ModelClassPluralName }}Controller
 {
     use AuthorizesRequests;
 
@@ -34,6 +35,10 @@ class {{ ModelClassName }}Controller
         {{ belongsToQueries }}
 
         {{ hasManyQueries }}
+
+        ${{ ModelPluralVariable }} = ${{ ModelPluralVariable }}->with({{ IncludedRelationships }})
+            ->paginate($per_page)
+            ->appends($request->except('page'));
 
         return view('admin.{{ ModelPluralVariable }}.index', compact('{{ ModelPluralVariable }}'));
     }
@@ -105,23 +110,26 @@ class {{ ModelClassName }}Controller
             $this->authorize('viewAny', {{ ModelClassName }}::class);
 
             $request->validate([
-                'action' => ['required', 'string', 'in:delete'],
+                'action' => ['required', 'string', Rule::in('delete')],
                 '{{ ModelPluralVariable }}' => ['required','array'],
                 '{{ ModelPluralVariable }}.*' => [Rule::exists('{{ TableName }}', 'id')]
             ]);
 
             $action = $request->input('action');
-            $ids = $request->input('{{ ModelPluralVariable }}');
+            $ids = $request->input('{{ ModelPluralVariable }}', []);
 
             switch ($action) {
                 case 'delete':
-                    $this->authorize('delete', ${{ ModelVariable }});
+                    $this->authorize('delete {{ ModelPluralLowercaseSpaces }}');
                     {{ ModelClassName }}::whereIn('id', $ids)
                         ->get()
-                        ->each(function ({{ ModelClassName }} ${{ ModelVariable }}) {
-                                ${{ ModelVariable }}->delete();
-                                });
+                        ->each(fn ({{ ModelClassName }} ${{ ModelVariable }}) =>
+                                ${{ ModelVariable }}->delete()
+                                );
                         break;
             }
+
+            $this->flashSuccessMessage();
+            return to_route('admin.{{ ModelPluralVariable }}.index');
         }
 }

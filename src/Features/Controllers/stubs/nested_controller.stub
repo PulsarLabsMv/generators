@@ -1,0 +1,50 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use Illuminate\Http\Request;
+use App\Models\{{ ParentModelClassName }};
+use App\Models\{{ ModelClassName }};
+use Javaabu\Helpers\Traits\HasOrderbys;
+
+class {{ ParentModelClassName }}{{ ModelClassName }}Controller
+{
+    use HasOrderbys;
+
+    protected static function initOrderbys()
+    {
+       static::$orderbys = [
+           'id'         => __('Id'),
+           'created_at' => __('Created At'),
+           'updated_at' => __('Updated At'),
+       ];
+    }
+
+    public function index({{ ParentModelClassName }} ${{ ParentModelVariable }}, Request $request)
+    {
+        $this->authorize('viewAny', [{{ ModelClassName }}::class, ${{ ParentModelVariable }}]);
+        $title = __('All {{ ModelClassPluralName }}');
+        $order_by = $this->getOrderBy($request, 'created_at');
+        $order = $this->getOrder($request, 'created_at', $order_by);
+        $per_page = $this->getPerPage($request);
+
+        ${{ ModelPluralVariable }} = ${{ ParentModelVariable }}->{{ Relationships }}()->orderBy($order_by, $order);
+
+        $search = null;
+        if ($search = $request->input('search')) {
+            ${{ ModelPluralVariable }}->search($search);
+            $title = __('{{ ModelClassName }}s matching \:search\'', ['search' => $search]);
+        }
+
+        if ($date_field = $request->input('date_field')) {
+            ${{ ModelPluralVariable }}->dateBetween($date_field, $request->input('date_from'));
+        }
+
+        ${{ ModelPluralVariable }} = ${{ ModelPluralVariable }}->with('{{ ParentModelVariable }}')
+                       ->paginate($per_page)
+                       ->append($request->except('{{ ModelVariable }}'));
+
+        return view('admin.{{ ParentModelRoutePluralName }}.{{ ModelRoutePluralName }}.index', compact('{{ ParentModelRouteParameter }}'));
+    }
+
+}

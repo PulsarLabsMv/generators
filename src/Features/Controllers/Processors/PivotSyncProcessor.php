@@ -25,20 +25,17 @@ class PivotSyncProcessor
             $columns = $command_data->database_reader->getColumnObjects($reference->getReferencingTableName());
             /** @var ColumnData $column */
             foreach ($columns as $column) {
-                if (! $column->isForeignKey() || $column->getName() == $reference->getReferencingColumnName())
-                {
+                if (! $column->isForeignKey() || $column->getName() == $reference->getReferencingColumnName()) {
                     continue;
                 }
 
                 $pivot_sync .= str_replace(
                     [
-                        '{{ model }}',
-                        '{{ model_key }}',
+                        '{{ model_plural }}',
                         '{{ relationship }}'
                     ],
                     [
-                        $column->getReferencedModelName(),
-                        $column->getReferencedColumnName(),
+                        str($column->getReferencedModelName())->snake()->plural(),
                         $column->getPluralRelationshipName()
                     ],
                     $pivot_sync_stub

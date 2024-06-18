@@ -5,6 +5,9 @@ namespace Abunooh\Generators\Tests\Feature\Commands;
 use PulsarLabs\Generators\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
+/**
+ * @group generate.controllers
+ */
 class GenerateControllerCommandTest extends TestCase
 {
     use RefreshDatabase;
@@ -34,7 +37,6 @@ class GenerateControllerCommandTest extends TestCase
 
         $actual_content = $this->getGeneratedFileContents($controller_path);
 
-        dd($actual_content);
         $actual_content = str_replace(["\r", "\n", "\t", " "], '', $actual_content);
         $expected_output = str_replace(["\r", "\n", "\t", " "], '', $expected_output);
 

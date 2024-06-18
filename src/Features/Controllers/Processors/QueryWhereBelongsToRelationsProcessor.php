@@ -33,8 +33,7 @@ class QueryWhereBelongsToRelationsProcessor
                     $query_belongs_to_stub
                 );
         }
-
-        $command_data->stub_contents = str_replace('{{ belongsToQueries }}', $query_belongs_to_stub, $command_data->stub_contents);
+        $command_data->stub_contents = str_replace('{{ belongsToQueries }}', $query_belongs_to, $command_data->stub_contents);
 
         return $next($command_data);
     }

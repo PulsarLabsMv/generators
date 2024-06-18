@@ -16,23 +16,24 @@ class BelongsToRelationAssocationProcessor
 
         /** @var ColumnData $column */
         foreach ($columns as $column) {
-            if (! $column->is_foreign_key) {
+            if (!$column->is_foreign_key) {
                 continue;
             }
 
             $belongs_to .= "\n" .
                 str_replace(
                     [
-                    '{{ relationship }}',
-                    '{{ model_key }}',
-                ],
+                        '{{ relationship }}',
+                        '{{ model }}',
+                    ],
                     [
                         $column->getRelationshipName(),
-                        $column->getName(),
+                        str($column->getReferencedModelName())->snake()->singular(),
                     ],
                     $belongs_to_stub
                 );
         }
+
 
         $command_data->stub_contents =
             str_replace(

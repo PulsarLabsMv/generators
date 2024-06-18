@@ -28,7 +28,7 @@ class OptionalBelongsToRelationAssocationProcessor
                         '{{ model_key }}',
                     ],
                     [
-                        str($column->getName())->snake()->singular(),
+                        str($column->getReferencedModelName())->snake()->singular(),
                         $column->getRelationshipName(),
                         $column->getName(),
                     ],
