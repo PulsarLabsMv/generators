@@ -1,0 +1,1 @@
+${{ ModelVariable }}->{{ relationship }}()->associate(${{ model }});

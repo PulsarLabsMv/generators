@@ -9,12 +9,12 @@ readonly class IndexData
 {
 
     public function __construct(
-        private string $name,
-        private array  $columns,
-        private bool   $is_unique,
-        private bool   $is_primary,
-        private array  $flags,
-        private array  $options,
+        private string  $name,
+        private array   $columns,
+        private bool    $is_unique,
+        private bool    $is_primary,
+        private array   $flags,
+        private array   $options,
         private ?string $namespace,
     )
     {

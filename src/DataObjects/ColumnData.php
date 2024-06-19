@@ -13,11 +13,12 @@ class ColumnData
         public bool        $nullable,
         public bool        $autoIncrement,
         public bool        $unsigned,
-        public ?string      $comment,
+        public ?string     $comment,
         public bool        $is_foreign_key = false,
         public ?string     $referenced_table_name = null,
         public ?string     $referenced_column_name = null,
-    ) {
+    )
+    {
     }
 
     public function getName(): string

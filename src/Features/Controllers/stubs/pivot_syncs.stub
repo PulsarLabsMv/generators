@@ -1,0 +1,3 @@
+if (${{ model_plural }} = $request->input('{{ model_plural }}', [])) {
+    ${{ ModelVariable }}->{{ relationship }}()->sync(${{ model_plural }});
+}

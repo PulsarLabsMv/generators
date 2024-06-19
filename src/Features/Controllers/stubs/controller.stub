@@ -1,0 +1,135 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Models\{{ ModelClassName }};
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use App\Http\Requests\{{ RequestFileName }};
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
+class {{ ModelClassPluralName }}Controller
+{
+    use AuthorizesRequests;
+
+    public function __construct()
+    {
+        $this->authorizeResource({{ ModelClassName }}::class);
+    }
+
+    /**
+    * Display a listing of the resource.
+    */
+    public function index(Request $request)
+    {
+        $order_by = $request->input('order_by', 'created_at');
+        $order = $request->input('order', 'desc');
+        $per_page = $request->input('per_page', config('defaults.per_page'));
+
+        ${{ ModelPluralVariable }} = {{ ModelClassName }}::orderBy($order_by, $order);
+
+        if ($search = $request->input('search')) {
+            ${{ ModelPluralVariable }}->search($search);
+        }
+
+        {{ belongsToQueries }}
+
+        {{ hasManyQueries }}
+
+        ${{ ModelPluralVariable }} = ${{ ModelPluralVariable }}->with({{ IncludedRelationships }})
+            ->paginate($per_page)
+            ->appends($request->except('page'));
+
+        return view('admin.{{ ModelRoutePluralResourceName }}.index', compact('{{ ModelPluralVariable }}'));
+    }
+
+    public function create(Request $request)
+    {
+        return view('admin.{{ ModelRoutePluralResourceName }}.create', [
+            '{{ ModelRouteParameter }}' => new {{ ModelClassName }}(),
+        ]);
+    }
+
+    public function store({{ RequestFileName }} $request)
+    {
+        ${{ ModelVariable }} = new {{ ModelClassName }}($request->validated());
+        {{ belongsToAssociations }}
+        ${{ ModelVariable }}->save();
+
+        {{ pivotSyncs }}
+
+        $this->flashSuccessMessage();
+
+        return to_route('admin.{{ ModelRoutePluralResourceName }}.edit', ${{ ModelVariable }});
+    }
+
+    public function show({{ ModelClassName }} ${{ ModelVariable }})
+    {
+        return view('admin.{{ ModelRoutePluralResourceName }}.show', compact('{{ ModelVariable }}'));
+    }
+
+    public function edit({{ ModelClassName }} ${{ ModelVariable }})
+    {
+        return view('admin.{{ ModelRoutePluralResourceName }}.edit', compact('{{ ModelVariable }}'));
+    }
+
+    public function update({{ RequestFileName }} $request, {{ ModelClassName }} ${{ ModelVariable }})
+    {
+        ${{ ModelVariable }}->fill($request->validated());
+
+        {{ belongsToOptionalAssociations }}
+
+        ${{ ModelVariable }}->save();
+
+        {{ pivotSyncs }}
+
+        $this->flashSuccessMessage();
+
+        return to_route('admin.{{ ModelRoutePluralResourceName }}.edit', ${{ ModelVariable }});
+    }
+
+        public function destroy({{ ModelClassName }} ${{ ModelVariable }}, Request $request)
+        {
+            if (! $post->delete()) {
+                if ($request->expectsJson()) {
+                    return response()->json(false, 500);
+                }
+
+                abort(500);
+            }
+
+            if ($request->expectsJson()) {
+                return response()->json(true);
+            }
+
+            return to_route('admin.{{ ModelRoutePluralResourceName }}.index');
+        }
+
+        public function bulk(Request $request)
+        {
+            $this->authorize('viewAny', {{ ModelClassName }}::class);
+
+            $request->validate([
+                'action' => ['required', 'string', Rule::in('delete')],
+                '{{ ModelPluralVariable }}' => ['required','array'],
+                '{{ ModelPluralVariable }}.*' => [Rule::exists('{{ TableName }}', 'id')]
+            ]);
+
+            $action = $request->input('action');
+            $ids = $request->input('{{ ModelPluralVariable }}', []);
+
+            switch ($action) {
+                case 'delete':
+                    $this->authorize('delete {{ ModelPluralLowercaseSpaces }}');
+                    {{ ModelClassName }}::whereIn('id', $ids)
+                        ->get()
+                        ->each(fn ({{ ModelClassName }} ${{ ModelVariable }}) =>
+                                ${{ ModelVariable }}->delete()
+                                );
+                        break;
+            }
+
+            $this->flashSuccessMessage();
+            return to_route('admin.{{ ModelRoutePluralResourceName }}.index');
+        }
+}

@@ -1,0 +1,3 @@
+if (${{ model }} = $request->input('{{ model }}')) {
+    ${{ ModelPluralVariable }}->where('{{ model_key }}', ${{ model }});
+}

@@ -8,7 +8,6 @@ class GeneratorsServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
-
         // declare publishes
         if ($this->app->runningInConsole()) {
             $this->publishes([

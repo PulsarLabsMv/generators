@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Post;
-use App\Http\Requests\PostsRequest;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Illuminate\Validation\Rule;
+use App\Http\Requests\PostRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class PostsController
@@ -54,13 +54,13 @@ class PostsController
         ]);
     }
 
-    public function store(PostsRequest $request)
+    public function store(PostRequest $request)
     {
         $post = new Post($request->validated());
         $post->category()->associate($request->input('category'));
         $post->save();
 
-        if ($tags = $request->input('tags')) {
+        if ($tags = $request->input('tags', [])) {
             $post->tags()->sync($tags);
         }
 
@@ -78,7 +78,7 @@ class PostsController
         return view('admin.posts.edit', compact('post'));
     }
 
-    public function update(PostsRequest $request, Post $post)
+    public function update(PostRequest $request, Post $post)
     {
         $post->fill($request->validated());
 
@@ -88,7 +88,9 @@ class PostsController
 
         $post->save();
 
-        $post->tags()->sync($request->input('tags', []));
+        if ($tags = $request->input('tags', [])) {
+            $post->tags()->sync($tags);
+        }
 
         $this->flashSuccessMessage();
         return to_route('admin.posts.edit', $post);
@@ -115,10 +117,10 @@ class PostsController
     {
         $this->authorize('viewAny', Post::class);
 
-        $this->validate($request, [
-            'action' => 'required|in:delete',
-            'posts' => 'required|array',
-            'posts.*' => 'exists:posts,id',
+        $request->validate([
+            'action'  => ['required', 'string', Rule::in('delete')],
+            'posts'   => ['required', 'array'],
+            'posts.*' => [Rule::exists('posts', 'id')]
         ]);
 
         $action = $request->input('action');
@@ -127,14 +129,13 @@ class PostsController
         switch ($action) {
             case 'delete':
 
-                // make sure allowed to delete
-                $this->authorize('delete_posts');
+                $this->authorize('delete posts');
 
                 Post::whereIn('id', $ids)
-                               ->get()
-                               ->each(function (Post $post) {
-                                   $post->delete();
-                               });
+                    ->get()
+                    ->each(
+                        fn(Post $post) => $post->delete()
+                    );
                 break;
         }
 

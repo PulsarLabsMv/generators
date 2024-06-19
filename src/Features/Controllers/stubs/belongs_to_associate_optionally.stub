@@ -1,0 +1,3 @@
+if (${{ model }} = $request->input('{{ model }}')) {
+    ${{ ModelVariable }}->{{ relationship }}()->associate(${{ model }});
+}

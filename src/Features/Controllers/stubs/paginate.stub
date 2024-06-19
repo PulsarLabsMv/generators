@@ -1,0 +1,2 @@
+${{ ModelPluralVariable }} = ${{ ModelPluralVariable }}->paginate($per_page)
+                                                       ->appends($request->except('page'));
