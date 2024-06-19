@@ -14,7 +14,7 @@ class ParentModelVariableProcessor
     public function handle(CommandData $command_data, Closure $next)
     {
         if (! $argument_parent_name = data_get($command_data->arguments, 'parent_name')) {
-            throw new MissingArgumentException('parent_name');
+            return $next($command_data);
         }
 
         $parent_name = str($argument_parent_name)->lower()->slug('_')->singular();
