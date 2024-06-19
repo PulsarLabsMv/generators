@@ -1,6 +1,6 @@
 <?php
 
-namespace Abunooh\Generators\Tests\Feature\Commands;
+namespace PulsarLabs\Generators\Tests\Feature\Commands;
 
 use PulsarLabs\Generators\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
