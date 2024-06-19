@@ -27,20 +27,19 @@ class GenerateFactoryCommandTest extends TestCase
     /** @test */
     public function it_can_generate_factory_file(): void
     {
-        $model_path = $this->app->path('database/factories/PostFactory.php');
-        //        $expected_output = $this->getTestStubContents('Factory.php');
+        $model_path = base_path('database/factories/PostFactory.php');
+        $expected_output = $this->getTestStubContents('Factory.php');
 
         $this->artisan('generate:factory', ['table' => 'posts'])
-            ->assertSuccessful();
+             ->assertSuccessful();
         $this->assertFileExists($model_path);
 
         $actual_content = $this->getGeneratedFileContents($model_path);
 
-        dd($actual_content);
         $actual_content = str_replace(["\r", "\n", "\t", " "], '', $actual_content);
-        //        $expected_output = str_replace(["\r", "\n", "\t", " "], '', $expected_output);
+        $expected_output = str_replace(["\r", "\n", "\t", " "], '', $expected_output);
 
-        //        $this->assertEquals($expected_output, $actual_content);
+        $this->assertEquals($expected_output, $actual_content);
     }
 
 }

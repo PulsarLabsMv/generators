@@ -20,9 +20,13 @@ class FakerRowProcessor
         /** @var ColumnData $column */
         foreach ($columns as $column) {
 
+            if (in_array($column->getName(), ['created_at', 'updated_at', 'deleted_at'])) {
+                continue;
+            }
+
             // Retrieve an enum instance
             if ($column->isEnum()) {
-                $faker_rows .= "'{$column->getName()}' => \$this->faker->randomElement(\\{$column->getEnum()})->value,\n";
+                $faker_rows .= "'{$column->getName()}' => \$this->faker->randomElement(\\{$column->getEnum()}::class)->value,\n";
                 continue;
             }
 

@@ -4,6 +4,7 @@ namespace PulsarLabs\Generators\Features\Factories\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Pipeline\Pipeline;
+use Illuminate\Support\Facades\File;
 use PulsarLabs\Generators\DataObjects\CommandData;
 use PulsarLabs\Generators\Contracts\DatabaseReader;
 use PulsarLabs\Generators\Contracts\GeneratorCommand;
@@ -55,6 +56,10 @@ class GenerateFactoryCommand extends Command
     private function getTargetFilePath(string $table_name): string
     {
         $model_class_name = str($table_name)->studly()->singular();
-        return app_path('database/factories/' . $model_class_name . 'Factory.php');
+        $namespace_folder = base_path('database/factories');
+        if (! File::exists($namespace_folder)) {
+            File::makeDirectory($namespace_folder);
+        }
+        return base_path('database/factories/' . $model_class_name . 'Factory.php');
     }
 }
