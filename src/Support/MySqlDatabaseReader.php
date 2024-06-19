@@ -4,7 +4,6 @@ namespace PulsarLabs\Generators\Support;
 
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Types\DateType;
@@ -34,7 +33,8 @@ class MySqlDatabaseReader implements DatabaseReader
 
     public function __construct(
         protected ?string $schema = null,
-    ) {
+    )
+    {
         $this->connection = DriverManager::getConnection($this->getConnectionParameters());
         $this->schema = $schema ?? config('database.connections.mysql.database');
     }
@@ -59,7 +59,6 @@ class MySqlDatabaseReader implements DatabaseReader
         if (! Schema::hasTable($table)) {
             throw new InvalidTableException($table);
         }
-
         $schemaManager = $this->connection->createSchemaManager();
         return $schemaManager->listTableColumns($table);
     }
@@ -131,6 +130,7 @@ class MySqlDatabaseReader implements DatabaseReader
             throw new InvalidTableException($table);
         }
     }
+
 
     public function getIndexObjects(string $table): array
     {
