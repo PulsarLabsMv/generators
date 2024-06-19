@@ -12,7 +12,7 @@ This Laravel package aims to simplify the creation of CRUD (Create, Read, Update
 Afeef:
 
 Ibrahim: 
-- [ ] Controller Generation: Automatically generates resource controllers with standard CRUD methods.
+- [x] Controller Generation: Automatically generates resource controllers with standard CRUD methods.
 - [ ] Route Registration: Registers the necessary resource routes in the web.php file.
 - [ ] API Resource Support: Implement the generation of API resource controllers and routes.
       
