@@ -53,7 +53,7 @@ class GenerateControllerCommandTest extends TestCase
     public function it_can_generate_nested_controller_file()
     {
         $controller_path = $this->app->path('Http/Controllers/Admin/CategoryPostsController.php');
-        $expected_output = $this->getTestStubContents('Controller.php');
+        $expected_output = $this->getTestStubContents('NestedController.php');
 
         $this->artisan('generate:controller', ['table' => 'posts', '--parent' => 'category'])
              ->assertSuccessful();
@@ -61,8 +61,6 @@ class GenerateControllerCommandTest extends TestCase
         $this->assertFileExists($controller_path);
 
         $actual_content = $this->getGeneratedFileContents($controller_path);
-
-        dd($actual_content);
 
         $actual_content = str_replace(["\r", "\n", "\t", " "], '', $actual_content);
         $expected_output = str_replace(["\r", "\n", "\t", " "], '', $expected_output);

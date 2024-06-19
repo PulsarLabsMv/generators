@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use App\Models\{{ ParentModelClassName }};
 use App\Models\{{ ModelClassName }};
+use App\Models\{{ ParentModelClassName }};
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Illuminate\Routing\Controller;
 use Javaabu\Helpers\Traits\HasOrderbys;
 
-class {{ ParentModelClassName }}{{ ModelClassName }}Controller
+class {{ ParentModelClassName }}{{ ModelClassPluralName }}Controller extends Controller
 {
     use HasOrderbys;
 
@@ -43,15 +45,15 @@ class {{ ParentModelClassName }}{{ ModelClassName }}Controller
         ${{ ModelPluralVariable }} = ${{ ModelPluralVariable }}
                        ->with({{ IncludedRelationships }})
                        ->paginate($per_page)
-                       ->append($request->except('{{ ModelVariable }}'));
+                       ->append($request->except('page'));
 
-        return view('admin.{{ ParentRoutePluralResourceName }}.{{ ModelRoutePluralResourceName }}.index', compact('{{ ParentModelVariable }}'));
+        return view('admin.{{ ParentRoutePluralResourceName }}.{{ ModelRoutePluralResourceName }}.index', compact('{{ ParentModelVariable }}', '{{ ModelPluralVariable }}'));
     }
 
     public function create(Request $request, {{ ParentModelClassName }} ${{ ParentModelVariable }})
     {
         $this->authorize('create', [{{ ParentModelClassName }}::class, ${{ ParentModelVariable }}]);
-        return view('admin.{{ ParentRoutePluralResourceName }}.{{ ModelRoutePluralResourceName }}.create', compact('${{ ParentModelVariable }}'));
+        return view('admin.{{ ParentRoutePluralResourceName }}.{{ ModelRoutePluralResourceName }}.create', compact('{{ ParentModelVariable }}'));
     }
 
     public function store({{ ParentModelClassName }} ${{ ParentModelVariable }}, {{ ParentModelClassName }}{{ ModelClassName }}Request $request)
@@ -64,7 +66,78 @@ class {{ ParentModelClassName }}{{ ModelClassName }}Controller
 
         $this->flashSuccessMessage();
 
-        return to_route('admin.{{ ParentRoutePluralResourceName }}.{{ ModelRoutePluralResourceName }}.edit', compact('${{ ParentModelVariable }}', '${{ ModelVariable }}'));
+        return to_route('admin.{{ ParentRoutePluralResourceName }}.{{ ModelRoutePluralResourceName }}.edit', compact('{{ ParentModelVariable }}', '{{ ModelVariable }}'));
     }
+
+    public function show({{ ParentModelClassName }} ${{ ParentModelVariable }}, {{ ModelClassName }} ${{ ModelVariable }})
+    {
+        $this->authorize('view', [${{ ModelVariable }}, ${{ ParentModelVariable }}]);
+        return view('admin.{{ ParentRoutePluralResourceName }}.{{ ModelRoutePluralResourceName }}.show', compact('{{ ParentModelVariable }}', '{{ ModelVariable }}'));
+    }
+
+    public function edit({{ ParentModelClassName }} ${{ ParentModelVariable }}, {{ ModelClassName }} ${{ ModelVariable }})
+    {
+        $this->authorize('update', [${{ ModelVariable }}, ${{ ParentModelVariable }}]);
+        return view('admin.{{ ParentRoutePluralResourceName }}.{{ ModelRoutePluralResourceName }}.edit', compact('{{ ParentModelVariable }}', '{{ ModelVariable }}'));
+    }
+
+    public function update({{ ParentModelClassName }}{{ ModelClassName }}Request $request, {{ ParentModelClassName }} ${{ ParentModelVariable }}, {{ ModelClassName }} ${{ ModelVariable }})
+    {
+         $this->authorize('update', [${{ ModelVariable }}, ${{ ParentModelVariable }}]);
+         ${{ ModelVariable }}->fill($request->validated());
+         {{ belongsToOptionalAssociations }}
+         ${{ ModelVariable }}->save();
+         {{ pivotSyncs }}
+
+         $this->flashSuccessMessage();
+         return to_route('admin.{{ ParentRoutePluralResourceName }}.{{ ModelRoutePluralResourceName }}.index', compact('{{ ParentModelVariable }}', '{{ ModelVariable }}'));
+    }
+
+    public function destroy(Request $request, {{ ParentModelClassName }} ${{ ParentModelVariable }}, {{ ModelClassName }} ${{ ModelVariable }})
+    {
+         $this->authorize('delete', [${{ ModelVariable }}, ${{ ParentModelVariable }}]);
+
+         if (! ${{ ModelVariable }}->delete()) {
+            if ($request->expectsJson()) {
+               return response()->json(false, 500);
+            }
+
+            abort(500);
+         }
+
+         if ($request->expectsJson()) {
+            return response()->json(true);
+         }
+
+         return to_route('admin.{{ ParentRoutePluralResourceName }}.{{ ModelRoutePluralResourceName }}.index', compact('{{ ParentModelVariable }}'));
+    }
+
+     public function bulk(Request $request, {{ ParentModelClassName }} ${{ ParentModelVariable }})
+     {
+            $this->authorize('viewAny', [{{ ModelClassName }}::class, ${{ ParentModelVariable }}]);
+
+            $request->validate([
+                'action' => ['required', Rule::in('delete')],
+                '{{ ModelPluralVariable }}' => ['required','array'],
+                '{{ ModelPluralVariable }}.*' => [Rule::exists('{{ TableName }}', 'id')]
+            ]);
+
+            $action = $request->input('action');
+            $ids = $request->input('{{ ModelPluralVariable }}', []);
+
+            switch ($action) {
+                case 'delete':
+                    $this->authorize('delete {{ ModelPluralLowercaseSpaces }}');
+                    {{ ModelClassName }}::whereIn('id', $ids)
+                        ->get()
+                        ->each(fn ({{ ModelClassName }} ${{ ModelVariable }}) =>
+                                ${{ ModelVariable }}->delete()
+                                );
+                        break;
+            }
+
+            $this->flashSuccessMessage();
+            return $this->redirect($request, action([{{ ParentModelClassName }}{{ ModelClassPluralName }}Controller::class, 'index']));
+        }
 
 }

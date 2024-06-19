@@ -7,10 +7,11 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Routing\Controller;
+use Javaabu\Helpers\Traits\HasOrderbys;
 
 class CategoryPostsController extends Controller
 {
-    use HasOrdersBy;
+    use HasOrderbys;
 
     protected static function initOrderbys()
     {
@@ -41,11 +42,11 @@ class CategoryPostsController extends Controller
             $posts->dateBetween($date_field, $request->input('date_from'));
         }
 
-        $posts = $posts->with('category')
+        $posts = $posts->with('category', 'tags')
                        ->paginate($per_page)
                        ->append($request->except('page'));
 
-        return view('admin.categories.posts.index', compact('posts'));
+        return view('admin.categories.posts.index', compact('category', 'posts'));
     }
 
     public function create(Request $request, Category $category)
@@ -56,11 +57,13 @@ class CategoryPostsController extends Controller
 
     public function store(Category $category, CategoryPostRequest $request)
     {
-        $this->authorize('create' . [Post::class, $category]);
+        $this->authorize('create', [Post::class, $category]);
         $post = new Post($request->validated());
         $post->category()->associate($category);
         $post->save();
-
+        if ($tags = $request->input('tags', [])) {
+            $post->tags()->sync($tags);
+        }
         $this->flashSuccessMessage();
 
         return to_route('admin.categories.posts.edit', compact('category', 'post'));
@@ -69,7 +72,7 @@ class CategoryPostsController extends Controller
     public function show(Category $category, Post $post)
     {
         $this->authorize('view', [$post, $category]);
-        return view('admin.categories.posts.show', compact('post', 'category'));
+        return view('admin.categories.posts.show', compact('category', 'post'));
     }
 
     public function edit(Category $category, Post $post)
@@ -83,10 +86,12 @@ class CategoryPostsController extends Controller
     {
         $this->authorize('update', [$post, $category]);
         $post->fill($request->validated());
-        if ($request->has('category')) {
-            $post->category()->associate($category);
-        }
+        $post->category()->associate($category);
         $post->save();
+
+        if ($tags = $request->input('tags', [])) {
+            $post->tags()->sync($tags);
+        }
 
         $this->flashSuccessMessage();
 
@@ -112,14 +117,14 @@ class CategoryPostsController extends Controller
         return to_route('admin.categories.posts.index', compact('category'));
     }
 
-    public function bulk(Category $category, Request $request)
+    public function bulk(Request $request, Category $category)
     {
         $this->authorize('viewAny', [Post::class, $category]);
 
-        $this->validate($request, [
+        $request->validate([
             'action'  => ['required', Rule::in('delete')],
             'posts'   => ['required', 'array'],
-            'posts.*' => [Rule::exists('posts', 'id')],
+            'posts.*' => [Rule::exists('posts', 'id')]
         ]);
 
         $action = $request->input('action');

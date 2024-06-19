@@ -5,26 +5,43 @@ namespace PulsarLabs\Generators\Features\Controllers\Processors;
 use Closure;
 use PulsarLabs\Generators\DataObjects\ColumnData;
 use PulsarLabs\Generators\DataObjects\CommandData;
-use PulsarLabs\Generators\Exceptions\MissingArgumentException;
 
 class BelongsToRelationAssocationProcessor
 {
     public function handle(CommandData $command_data, Closure $next)
     {
-        if (! $argument_parent_name = data_get($command_data->arguments, 'parent_name')) {
-            throw new MissingArgumentException('parent_name');
-        }
+        /** @var string|null $argument_parent_name */
+        $argument_parent_name = data_get($command_data->arguments, 'parent_name');
 
         $columns = $command_data->getColumnObjects();
         $belongs_to_stub = file_get_contents(__DIR__ . '/../stubs/belongs_to_associate.stub');
         $belongs_to = "";
 
+        /**
+         * Closure to manage stub selection
+         * @param string $table_name
+         * @return false|string
+         */
+        $selectedStub = function (string $table_name) use ($belongs_to_stub, $argument_parent_name) {
+            if (! $argument_parent_name) {
+                return $belongs_to_stub;
+            }
+
+            if ($table_name !== $argument_parent_name) {
+                return $belongs_to_stub;
+            }
+
+            return file_get_contents(__DIR__ . '/../stubs/nested_belongs_to_associate.stub');
+        };
+
         /** @var ColumnData $column */
         foreach ($columns as $column) {
+
             if (! $column->is_foreign_key) {
                 continue;
             }
 
+            $table_name = str($column->referenced_table_name)->singular()->snake()->toString();
             $belongs_to .= "\n" .
                 str_replace(
                     [
@@ -35,9 +52,7 @@ class BelongsToRelationAssocationProcessor
                         $column->getRelationshipName(),
                         str($column->getReferencedModelName())->snake()->singular(),
                     ],
-                    str($column->referenced_table_name)->singular()->snake()->toString() == $argument_parent_name ?
-                        file_get_contents(__DIR__ . '/../stubs/nested_belongs_to_associate.stub')
-                        : $belongs_to_stub
+                    $selectedStub($table_name)
                 );
         }
 

@@ -52,13 +52,13 @@ class GenerateNestedControllerCommand extends Command
         ParentRoutePluralResourceNameProcessor::class,
         ModelRoutePluralResourceNameProcessor::class,
         IncludedRelationshipsProcessor::class,
-        ParentRelationshipProcessor::class
+        ParentRelationshipProcessor::class,
     ];
 
     public function handle(): void
     {
         $table_name = $this->argument('table');
-        $parent_table_name = $this->option('parent');
+        $parent_name = $this->option('parent');
         $stub = $this->getStub();
 
         $databaseReaderClass = config('generators.database_reader');
@@ -69,7 +69,7 @@ class GenerateNestedControllerCommand extends Command
             'table_name'      => $table_name,
             'database_reader' => $databaseReader,
             'arguments'       => [
-                'parent_name' => $parent_table_name,
+                'parent_name' => $parent_name,
             ],
         ]);
 
@@ -78,9 +78,7 @@ class GenerateNestedControllerCommand extends Command
             ->through($this->processors)
             ->thenReturn();
 
-        dd($processed_command_data->stub_contents);
-
-        $file_path = $this->getTargetFilePath($table_name);
+        $file_path = $this->getTargetFilePath($parent_name, $table_name);
 
         file_put_contents($file_path, $processed_command_data->stub_contents);
 
@@ -92,15 +90,17 @@ class GenerateNestedControllerCommand extends Command
         return file_get_contents(__DIR__ . '/../stubs/nested_controller.stub');
     }
 
-    private function getTargetFilePath(string $table_name): string
+    private function getTargetFilePath(string $parent_name, string $table_name): string
     {
+        $parent_class_name = str($parent_name)->studly()->singular();
         $controller_class_name = str($table_name)->studly()->plural();
+
         $namespace_folder = app_path('Http/Controllers/Admin');
         if (! File::exists($namespace_folder)) {
             File::makeDirectory($namespace_folder);
         }
 
-        return app_path('Http/Controllers/Admin/' . $controller_class_name . 'Controller.php');
+        return app_path('Http/Controllers/Admin/' . $parent_class_name . $controller_class_name . 'Controller.php');
     }
 
 
