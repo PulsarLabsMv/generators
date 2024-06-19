@@ -7,15 +7,16 @@ This Laravel package aims to simplify the creation of CRUD (Create, Read, Update
 - [x] Permissions Generation: Automatically adds permissions to the permissions seeder.
 - [x] Policy Generation: Generates policy classes for authorization.
 - [x] Form Request Generation: Generates form request classes for validation.
+- [x] Controller Generation: Automatically generates resource controllers with standard CRUD methods.
+- [x] Factory Generation: Automatically generate factories for test data population.
 
 ## Ongoing
 Afeef:
 
-Ibrahim: 
-- [x] Controller Generation: Automatically generates resource controllers with standard CRUD methods.
+Ibrahim:
 - [ ] Route Registration: Registers the necessary resource routes in the web.php file.
 - [ ] API Resource Support: Implement the generation of API resource controllers and routes.
-- [ ] Factory Generation: Automatically generate factories for test data population.
+
       
 ## TODOs:
 - [ ] Nested models: Add support for creating nested models

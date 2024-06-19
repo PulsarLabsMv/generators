@@ -1,6 +1,6 @@
 <?php
 
-namespace Abunooh\Generators\Tests\Feature\Commands;
+namespace PulsarLabs\Generators\Tests\Feature\Commands;
 
 use PulsarLabs\Generators\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -16,11 +16,13 @@ class GenerateControllerCommandTest extends TestCase
     {
         parent::setUp();
         $this->deleteFile($this->app->path('Http/Controllers/Admin/PostsController.php'));
+        $this->deleteFile($this->app->path('Http/Controllers/Admin/CategoryPostsController.php'));
     }
 
     protected function tearDown(): void
     {
         $this->deleteFile($this->app->path('Http/Controllers/Admin/PostsController.php'));
+        $this->deleteFile($this->app->path('Http/Controllers/Admin/CategoryPostsController.php'));
         parent::tearDown();
     }
 

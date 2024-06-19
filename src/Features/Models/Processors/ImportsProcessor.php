@@ -3,13 +3,10 @@
 namespace PulsarLabs\Generators\Features\Models\Processors;
 
 use Closure;
-use PulsarLabs\Generators\DataObjects\ColumnData;
 use PulsarLabs\Generators\DataObjects\CommandData;
-use PulsarLabs\Generators\DataObjects\ReferencingTableData;
 
 class ImportsProcessor
 {
-
     public function handle(CommandData $command_data, Closure $next)
     {
         $references = $command_data->getReferencingTableObjects();
@@ -29,8 +26,8 @@ class ImportsProcessor
         }
 
         $has_belong_to_many = collect($references)->filter(function ($reference) {
-                return $reference->referencingTableIsPivot();
-            })->count() > 0;
+            return $reference->referencingTableIsPivot();
+        })->count() > 0;
 
         if ($has_belong_to_many) {
             $imports .= "use Illuminate\Database\Eloquent\Relations\BelongsToMany;\n";
