@@ -15,11 +15,11 @@ Ibrahim:
 - [x] Controller Generation: Automatically generates resource controllers with standard CRUD methods.
 - [ ] Route Registration: Registers the necessary resource routes in the web.php file.
 - [ ] API Resource Support: Implement the generation of API resource controllers and routes.
+- [ ] Factory Generation: Automatically generate factories for test data population.
       
 ## TODOs:
 - [ ] Nested models: Add support for creating nested models
 - [ ] View Generation: Creates basic Blade templates for index, create, edit, and show pages.
-- [ ] Factory Generation: Automatically generate factories for test data population.
 - [ ] Polymorphic Relationships: Add support for polymorphic relationships in models.
 - [ ] Soft Deletes: Add support for soft deletes in models and migrations.
 - [ ] Testing Scaffolding: Generate basic PHPUnit test cases for CRUD operations.
