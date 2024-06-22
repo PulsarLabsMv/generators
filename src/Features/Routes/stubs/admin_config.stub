@@ -1,0 +1,11 @@
+<?php
+
+    /*
+     * The domain name of the admin panel.
+     */
+    'domain' => env('ADMIN_DOMAIN', ''),
+
+    /*
+     * The prefix for the admin panel.
+     */
+    'prefix' => env('ADMIN_PREFIX', ''),

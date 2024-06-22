@@ -1,0 +1,10 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+{{ imports }}
+
+Route::group([
+    'middleware' => ['auth:web_admin'],
+], function () {
+    {{ routes }}
+});

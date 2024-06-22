@@ -4,7 +4,6 @@ namespace PulsarLabs\Generators\Support;
 
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Types\DateType;
@@ -21,6 +20,7 @@ use Doctrine\DBAL\Types\DecimalType;
 use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\DBAL\Types\DateTimeType;
 use Illuminate\Support\Facades\Schema;
+use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use PulsarLabs\Generators\DataObjects\IndexData;
 use PulsarLabs\Generators\DataObjects\ColumnData;
 use PulsarLabs\Generators\Contracts\DatabaseReader;
@@ -51,6 +51,17 @@ class MySqlDatabaseReader implements DatabaseReader
     }
 
     /**
+     * @param string $table
+     * @return array<int,string>
+     * @throws Exception
+     */
+    public function listTables(): array
+    {
+        $schema_manager = $this->connection->createSchemaManager();
+        return $schema_manager->listTableNames();
+    }
+
+    /**
      * @throws InvalidTableException
      * @throws Exception
      */
@@ -60,8 +71,8 @@ class MySqlDatabaseReader implements DatabaseReader
             throw new InvalidTableException($table);
         }
 
-        $schemaManager = $this->connection->createSchemaManager();
-        return $schemaManager->listTableColumns($table);
+        $schema_manager = $this->connection->createSchemaManager();
+        return $schema_manager->listTableColumns($table);
     }
 
     protected function getColumnDataObject($column, array $foreign_keys): ColumnData
@@ -120,13 +131,13 @@ class MySqlDatabaseReader implements DatabaseReader
         }
 
         try {
-            $schemaManager = $this->connection->createSchemaManager();
+            $schema_manager = $this->connection->createSchemaManager();
         } catch (Exception $e) {
             throw new InvalidTableException($table);
         }
 
         try {
-            return $schemaManager->listTableIndexes($table);
+            return $schema_manager->listTableIndexes($table);
         } catch (Exception $e) {
             throw new InvalidTableException($table);
         }
