@@ -1,6 +1,12 @@
-1. 1
-	1. index.md
-	2. installation.md
-2. 2
-	1. user-management.md
-    2. installation.md  
+- v1
+-- index.md
+-- installation.md
+-- basic usage
+--- using generators
+--- available generators
+- v2
+-- user-management.md
+-- installation.md
+-- basic usage
+--- using generators
+--- available generators
